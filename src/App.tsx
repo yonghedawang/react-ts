@@ -41,13 +41,14 @@ function App() {
 
   },[editor]);
 
+  //暂时没搞明白是什么
   const addStaticPath = React.useCallback(()=>{
     //需要在nginx里配置一下跨域
     if(editor){
       editor.objects.add({
         type:'StaticPath',
-        fill:'#CBCBCB',//https://tstatic.redocn.com/react/images/001-hug.svg  https://ik.imagekit.io/scenify/005-date.svg
-        path:[[ 60, 0]]
+        fill:'#000000',//https://tstatic.redocn.com/react/images/001-hug.svg  https://ik.imagekit.io/scenify/005-date.svg
+        //path:[[ 60, 0]]
       });
     }
 
