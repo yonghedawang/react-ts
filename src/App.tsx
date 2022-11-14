@@ -27,6 +27,30 @@ function App() {
     }
   }, [editor]);
 
+  //背景图片，添加上来在最底层
+  const addBackgroundImage = React.useCallback(() => {
+    if (editor) {
+      editor.objects.add({
+        type: "BackgroundImage",
+        src: "https://img.redocn.com/sheji/20221114/lantianbaiyunchengshijianyuefengshipinanquanzhouxuanchuanzhanban_12754281.jpg",
+        cropX:10,
+        cropY:10
+      });
+    }
+  }, [editor]);
+
+
+  //没有效果
+  const addBackground = React.useCallback(() => {
+    if (editor) {
+      editor.objects.add({
+        type: "Background",
+        fill:"#000000"
+        
+      });
+    }
+  }, [editor]);
+
   
   //静态矢量图
   const addStaticVector = React.useCallback(()=>{
@@ -54,7 +78,7 @@ function App() {
 
   },[editor]);
 
-  //StaticGroup，DynamicGroup 不知道怎么操作，在 react-design-editor  搜不到相关代码
+  //StaticGroup，DynamicGroup，DynamicPath，DynamicImage， 不知道怎么操作，在 react-design-editor  搜不到相关代码
 
 /*   {
     id: "E2mcHFkwGA-MTJcfl3Abs",
@@ -103,6 +127,8 @@ function App() {
       >
         <button onClick={addText}>ADD TEXT</button>
         <button onClick={addImage}>ADD IMAGE</button>
+        <button onClick={addBackgroundImage}>ADD BackgroundImage</button>
+        <button onClick={addBackground}>ADD Background</button>
         <button onClick={addStaticVector}>ADD StaticVector</button>
         <button onClick={addStaticPath}>ADD StaticPath</button>
       </div>
