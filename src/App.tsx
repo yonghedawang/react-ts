@@ -1,42 +1,54 @@
-import { useState } from 'react'
-import {styled} from 'styletron-react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import React from "react";
+import { Canvas, useEditor } from "@layerhub-io/react";
 
 function App() {
-  const [count, setCount] = useState(0)
-  const ATag = styled('a',{
-    fontSize:'40px',
-    color:'blue'
-  }
-  );
+  const editor = useEditor();
+  const addText = React.useCallback(() => {
+    if (editor) {
+      editor.objects.add({
+        type: "StaticText",
+        text: "Hello Layerhub",
+        textAlign:"center"
+      });
+    }
+  }, [editor]);
+
+  const addImage = React.useCallback(() => {
+    if (editor) {
+      editor.objects.add({
+        type: "StaticImage",
+        src: "https://img.redocn.com/sheji/20221111/hongseshengdanjieyaoqinghanhaibao_12751095.jpg",
+        cropX:10,
+        cropY:10
+      });
+    }
+  }, [editor]);
+
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div
+      style={{
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div
+        style={{
+          height: "80px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <button onClick={addText}>ADD TEXT</button>
+        <button onClick={addImage}>ADD IMAGE</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div style={{ flex: 1, display:"flex" }}>
+        <Canvas />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <p>
-        <ATag href='http://www.redocn.com' id="a_id">styletron</ATag>
-      </p>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
