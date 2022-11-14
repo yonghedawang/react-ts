@@ -3,6 +3,8 @@ import { Canvas, useEditor } from "@layerhub-io/react";
 
 function App() {
   const editor = useEditor();
+
+  //静态文字
   const addText = React.useCallback(() => {
     if (editor) {
       editor.objects.add({
@@ -13,6 +15,7 @@ function App() {
     }
   }, [editor]);
 
+  //静态图片
   const addImage = React.useCallback(() => {
     if (editor) {
       editor.objects.add({
@@ -23,6 +26,20 @@ function App() {
       });
     }
   }, [editor]);
+
+  
+  //静态矢量图
+  const addStaticVector = React.useCallback(()=>{
+    //需要在nginx里配置一下跨域
+    if(editor){
+      editor.objects.add({
+        type:'StaticVector',
+        src:'https://tstatic.redocn.com/react/images/001-hug.svg'//https://tstatic.redocn.com/react/images/001-hug.svg  https://ik.imagekit.io/scenify/005-date.svg
+        //colorMap:
+      });
+    }
+
+  },[editor]);
 
   return (
     <div
@@ -43,6 +60,7 @@ function App() {
       >
         <button onClick={addText}>ADD TEXT</button>
         <button onClick={addImage}>ADD IMAGE</button>
+        <button onClick={addStaticVector}>ADD StaticVector</button>
       </div>
       <div style={{ flex: 1, display:"flex" }}>
         <Canvas />
