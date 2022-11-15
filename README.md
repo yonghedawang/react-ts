@@ -9,3 +9,7 @@ https://baseweb.design/
 #样式组件
 styletron-engine-atomic
 styletron-react
+
+
+const editor = useEditor()  //编辑对象
+editor.history  //历史记录操作
