@@ -78,6 +78,29 @@ function App() {
 
   },[editor]);
 
+  //撤销
+  const handleUndo = React.useCallback(()=>{
+    if(editor){
+      editor.history.undo();
+    }
+  },[editor]);
+
+  //取消撤销
+  const handleRedo = React.useCallback(()=>{
+    if(editor){
+      editor.history.redo();
+    }
+  },[editor]);
+
+  //重置,重置后不能撤销和不能取消撤销了。从当前开始记录历史
+  const handleReset = React.useCallback(()=>{
+    if(editor){
+      console.log('editor.history',editor.history);
+      editor.history.reset();
+    }
+  },[editor]);
+
+
   //StaticGroup，DynamicGroup，DynamicPath，DynamicImage， 不知道怎么操作，在 react-design-editor  搜不到相关代码
 
 /*   {
@@ -125,6 +148,9 @@ function App() {
           justifyContent: "center",
         }}
       >
+        <button onClick={handleUndo}>undo</button>
+        <button onClick={handleRedo}>redo</button>
+        <button onClick={handleReset}>reset</button>
         <button onClick={addText}>ADD TEXT</button>
         <button onClick={addImage}>ADD IMAGE</button>
         <button onClick={addBackgroundImage}>ADD BackgroundImage</button>
