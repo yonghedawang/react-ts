@@ -1,10 +1,10 @@
 import React from "react";
-import { Canvas, useEditor } from "@layerhub-io/react";
+import { Canvas, useEditor,useActiveObject } from "@layerhub-io/react";
 
 function App() {
   const editor = useEditor();
-
-
+  const activeObject = useActiveObject() as any
+  const [state, setState] = React.useState({ opacity: 30 })
 
   //静态文字
   const addText = React.useCallback(() => {
@@ -256,6 +256,15 @@ function App() {
 
   },[editor]);
 
+  //设置透明度
+  const changeOpacity = React.useCallback((event:any)=>{
+    console.log('event=',event);
+    setState({ opacity: event.target.value })
+    if(editor){
+      editor.objects.update({opacity:event.target.value/100});
+    }
+  },[activeObject])
+
   //撤销
   const handleUndo = React.useCallback(()=>{
     if(editor){
@@ -308,6 +317,19 @@ function App() {
     }
   },[editor]);
 
+  //更新尺寸
+  // const applyResize = () => {
+    
+  //   if (editor) {
+  //     editor.frame.resize({
+  //       width: parseInt(width),
+  //       height: parseInt(height),
+  //     })
+      
+  //   }
+    
+  // }
+
 
   //StaticGroup，DynamicGroup，DynamicPath，DynamicImage， 不知道怎么操作，在 react-design-editor  搜不到相关代码
 
@@ -356,6 +378,9 @@ function App() {
           justifyContent: "center",
         }}
       >
+        画布尺寸：
+        <br />
+        透明度：<input value={state.opacity} onChange={changeOpacity}/>
         <button onClick={handleClone}>clone</button>
         <button onClick={handleDelete}>delete</button>
         <button onClick={handleLock}>lock</button>  
