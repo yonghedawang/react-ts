@@ -21,5 +21,9 @@ editor.history  //历史记录操作
 #react-editor 的hook 后 常量
 const editorType = useEditorType() //编辑类型  NONE，PRESENTATION，VIDEO，GRAPHIC   这个是react-editor 的hook,不是layerhub sdk 的api
 
+
 左侧操作按钮常量配置
 /src/constants/app-options  Templates,Customize ....
+
+左侧Elements 和 Graphics 原理实际上一样的，前者是存path
+实际上我觉得存在svg 和 Graphics 一样使用更方便

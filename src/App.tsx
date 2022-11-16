@@ -80,7 +80,19 @@ function App() {
 
   },[editor]);
 
+  /* 
   
+   [ 
+          ["M",0,129],
+          ["L",125,129],
+          ["L",125,0],
+            ["L",0,0],
+              ["L",0,129],
+                ["Z"],
+                ]
+  
+  */
+  //设计好后，可以存成svg ,数据从里提取
   const addElements = React.useCallback(()=>{
     //需要在nginx里配置一下跨域
     if(editor){
@@ -211,12 +223,17 @@ function App() {
           ],
           ["z"],
           ["M", 410.941406, 189.394531],
-        ],
+        ]
+        
+        
+       ,
         fill: "#CBCBCB",
         metadata: {},
         preview: "https://ik.imagekit.io/scenify/1635014340531_452464.png",
         id: "vAE3f8-4M0-2j5PF04cVY",
       };
+      
+     
       
       /* {
         left: 0,
