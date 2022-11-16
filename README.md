@@ -14,6 +14,7 @@ styletron-react
 
 #layerhub sdk 的api
 const editor = useEditor()  //编辑对象
+editor.objects.delete ,lock 等操作都是对当前图层进行操作
 editor.history  //历史记录操作
 
 
