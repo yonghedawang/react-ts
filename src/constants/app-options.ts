@@ -1,4 +1,4 @@
-/*е·¦дѕ§ж“ЌдЅњжЊ‰й’®*/ 
+/*ЧуІа°ґЕҐ¶ЁТе*/ 
 export const BASE_ITEMS = [
   {
     id: "templates",

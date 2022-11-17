@@ -3,15 +3,20 @@ lockfileVersion: 5.4
 specifiers:
   '@layerhub-io/react': ^0.3.3
   '@layerhub-io/types': ^0.3.0
+  '@layerhub-io/use-timer': ^0.1.1
   '@reduxjs/toolkit': ^1.9.0
   '@types/react': ^18.0.24
   '@types/react-dom': ^18.0.8
   '@vitejs/plugin-react': ^2.2.0
+  i18next: ^22.0.5
   nanoid: ^4.0.0
   react: ^18.2.0
   react-dom: ^18.2.0
+  react-i18next: ^12.0.0
   react-redux: ^8.0.5
+  react-router-dom: ^6.4.3
   redux: ^4.2.0
+  resize-observer-polyfill: ^1.5.1
   styletron-engine-atomic: ^1.5.0
   styletron-react: ^6.1.0
   typescript: ^4.6.4
@@ -20,12 +25,17 @@ specifiers:
 dependencies:
   '@layerhub-io/react': 0.3.3
   '@layerhub-io/types': 0.3.0
+  '@layerhub-io/use-timer': 0.1.1_react@18.2.0
   '@reduxjs/toolkit': 1.9.0_k4ae6lp43ej6mezo3ztvx6pykq
+  i18next: 22.0.5
   nanoid: 4.0.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-i18next: 12.0.0_e52s5leb62x5eudkmfoztpifde
   react-redux: 8.0.5_ux5ypa4vfeu6lrs5gncpqp4a4u
+  react-router-dom: 6.4.3_biqbaboplfbrettd7655fr4n2y
   redux: 4.2.0
+  resize-observer-polyfill: 1.5.1
   styletron-engine-atomic: 1.5.0
   styletron-react: 6.1.0_react@18.2.0
 
@@ -411,6 +421,15 @@ packages:
     resolution: {integrity: sha512-GcQdBSCKeVjR8qcW/zQuucSZXxK6ub1ugCDskUcZ7rcfK/of41Sbq39G3ASMynTb/RzlrgcNa4zwIadtPBAV2Q==}
     dev: false
 
+  /@layerhub-io/use-timer/0.1.1_react@18.2.0:
+    resolution: {integrity: sha512-t/fZ3UfCNcuMPaTfn8ppMtgyYgUDVRjSuYWDdij1S2Cewdsn46V5w8F5zYLd6IY7xNj/XjYlxW8WZbsiqG/ZXA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /@mapbox/node-pre-gyp/1.0.10:
     resolution: {integrity: sha512-4ySo4CjzStuprMwk35H5pPbkymjv1SF3jGLj6rAHp/xT/RF7TL7bd9CTm1xDY49K2qF7jmR/g7k+SkLETP6opA==}
     hasBin: true
@@ -447,6 +466,11 @@ packages:
       redux: 4.2.0
       redux-thunk: 2.4.2_redux@4.2.0
       reselect: 4.1.7
+    dev: false
+
+  /@remix-run/router/1.0.3:
+    resolution: {integrity: sha512-ceuyTSs7PZ/tQqi19YZNBc5X7kj1f8p+4DIyrcIYFY9h+hd1OKm4RqtiWldR9eGEvIiJfsqwM4BsuCtRIuEw6Q==}
+    engines: {node: '>=14'}
     dev: false
 
   /@rtsao/csstype/2.6.5-forked.0:
@@ -1162,6 +1186,12 @@ packages:
     dev: false
     optional: true
 
+  /html-parse-stringify/3.0.1:
+    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
+    dependencies:
+      void-elements: 3.1.0
+    dev: false
+
   /http-proxy-agent/5.0.0:
     resolution: {integrity: sha512-n2hY8YdoRE1i7r6M0w9DIw5GgZN0G25P8zLCRQ8rjXtTU3vsNFBI/vWK/UIeE6g5MUUz6avwAPXmL6Fy9D/90w==}
     engines: {node: '>= 6'}
@@ -1187,6 +1217,12 @@ packages:
 
   /hyphenate-style-name/1.0.4:
     resolution: {integrity: sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==}
+    dev: false
+
+  /i18next/22.0.5:
+    resolution: {integrity: sha512-N2AXKCLHzv1ClfLqiwbAPJHClovfRv9iplySiZ/S3LfQ7PNjkVEkVpFbhCXDsPhQd6kLp6DKjbzpowniE8Mdiw==}
+    dependencies:
+      '@babel/runtime': 7.20.1
     dev: false
 
   /iconv-lite/0.6.3:
@@ -1549,6 +1585,26 @@ packages:
       scheduler: 0.23.0
     dev: false
 
+  /react-i18next/12.0.0_e52s5leb62x5eudkmfoztpifde:
+    resolution: {integrity: sha512-/O7N6aIEAl1FaWZBNvhdIo9itvF/MO/nRKr9pYqRc9LhuC1u21SlfwpiYQqvaeNSEW3g3qUXLREOWMt+gxrWbg==}
+    peerDependencies:
+      i18next: '>= 19.0.0'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.1
+      html-parse-stringify: 3.0.1
+      i18next: 22.0.5
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: false
@@ -1595,6 +1651,29 @@ packages:
     resolution: {integrity: sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /react-router-dom/6.4.3_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-MiaYQU8CwVCaOfJdYvt84KQNjT78VF0TJrA17SIQgNHRvLnXDJO6qsFqq8F/zzB1BWZjCFIrQpu4QxcshitziQ==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@remix-run/router': 1.0.3
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-router: 6.4.3_react@18.2.0
+    dev: false
+
+  /react-router/6.4.3_react@18.2.0:
+    resolution: {integrity: sha512-BT6DoGn6aV1FVP5yfODMOiieakp3z46P1Fk0RNzJMACzE7C339sFuHebfvWtnB4pzBvXXkHP2vscJzWRuUjTtA==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=16.8'
+    dependencies:
+      '@remix-run/router': 1.0.3
+      react: 18.2.0
+    dev: false
 
   /react/18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
@@ -1939,6 +2018,11 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /void-elements/3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
+    engines: {node: '>=0.10.0'}
+    dev: false
 
   /w3c-hr-time/1.0.2:
     resolution: {integrity: sha512-z8P5DvDNjKDoFIHK7q8r8lackT6l+jo/Ye3HOle7l9nICP9lf1Ci25fy9vHd0JOWewkIFzXIEig3TdKT7JQ5fQ==}

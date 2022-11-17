@@ -1,6 +1,8 @@
 import React from "react"
 import { Provider as ScenifyProvider } from "@layerhub-io/react"
-
+import { Client as Styletron } from "styletron-engine-atomic"
+import { Provider as StyletronProvider } from "styletron-react"
+import { BaseProvider, LightTheme } from "baseui"
 import { store } from "./store/store"
 import { Provider as ReduxProvier } from "react-redux"
 import { AppProvider } from "./contexts/AppContext"
@@ -9,18 +11,22 @@ import { I18nextProvider } from "react-i18next"
 import { TimerProvider } from "@layerhub-io/use-timer"
 import i18next from "i18next"
 import "./translations"
-
-/*这里去掉了 styletron baseui ,以后要用antd的话，应该是这里引入provider*/
+console.log("/src/Provider file start");
+const engine = new Styletron()
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
-  
+  console.log("/src/Provider component  start");
   return (
     <ReduxProvier store={store}>
       <DesignEditorProvider>
         <TimerProvider>
           <AppProvider>
-            <ScenifyProvider> 
-              <I18nextProvider i18n={i18next}>{children}</I18nextProvider>   
+            <ScenifyProvider>
+              <StyletronProvider value={engine}>
+                <BaseProvider theme={LightTheme}>
+                  <I18nextProvider i18n={i18next}>{children}</I18nextProvider>
+                </BaseProvider>
+              </StyletronProvider>
             </ScenifyProvider>
           </AppProvider>
         </TimerProvider>
@@ -30,3 +36,4 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
 }
 
 export default Provider
+console.log("/src/Provider file end");
