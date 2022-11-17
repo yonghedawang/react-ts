@@ -1,10 +1,24 @@
 import React from "react";
-import { Canvas, useEditor,useActiveObject } from "@layerhub-io/react";
+import { Canvas, useEditor, useActiveObject,useFrame } from "@layerhub-io/react";
 
 function App() {
   const editor = useEditor();
+  const frame = useFrame()
   const activeObject = useActiveObject() as any
-  const [state, setState] = React.useState({ opacity: 30 })
+  const [opacity, setOpacity] = React.useState(30)
+  const [frameWidth, setFrameWidth] = React.useState(1000)
+  const [frameHeight, setFrameHeight] = React.useState(1000)
+
+  //第一次加载
+  React.useEffect(() => {
+    if(frame){
+      console.log("frame=>",frame);
+      setFrameWidth(frame.width)
+      setFrameHeight(frame.height)
+    }
+    
+
+  }, [editor]);
 
   //静态文字
   const addText = React.useCallback(() => {
@@ -12,7 +26,7 @@ function App() {
       editor.objects.add({
         type: "StaticText",
         text: "Hello Layerhub",
-        textAlign:"center"
+        textAlign: "center"
       });
     }
   }, [editor]);
@@ -23,8 +37,8 @@ function App() {
       editor.objects.add({
         type: "StaticImage",
         src: "https://tstatic.redocn.com/react/images/logo.jpg",
-        cropX:10,
-        cropY:10
+        cropX: 10,
+        cropY: 10
       });
     }
   }, [editor]);
@@ -35,8 +49,8 @@ function App() {
       editor.objects.add({
         type: "BackgroundImage",
         src: "https://tstatic.redocn.com/react/images/logo.jpg",
-        cropX:10,
-        cropY:10
+        cropX: 10,
+        cropY: 10
       });
     }
   }, [editor]);
@@ -47,38 +61,38 @@ function App() {
     if (editor) {
       editor.objects.add({
         type: "Background",
-        fill:"#000000"
-        
+        fill: "#000000"
+
       });
     }
   }, [editor]);
 
-  
+
   //静态矢量图
-  const addStaticVector = React.useCallback(()=>{
+  const addStaticVector = React.useCallback(() => {
     //需要在nginx里配置一下跨域
-    if(editor){
+    if (editor) {
       editor.objects.add({
-        type:'StaticVector',
-        src:'https://tstatic.redocn.com/react/images/001-hug.svg'//https://tstatic.redocn.com/react/images/001-hug.svg  https://ik.imagekit.io/scenify/005-date.svg
+        type: 'StaticVector',
+        src: 'https://tstatic.redocn.com/react/images/001-hug.svg'//https://tstatic.redocn.com/react/images/001-hug.svg  https://ik.imagekit.io/scenify/005-date.svg
         //colorMap:
       });
     }
 
-  },[editor]);
+  }, [editor]);
 
-  //暂时没搞明白是什么
-  const addStaticPath = React.useCallback(()=>{
-    //需要在nginx里配置一下跨域
-    if(editor){
-      editor.objects.add({
-        type:'StaticPath',
-        fill:'#000000',//https://tstatic.redocn.com/react/images/001-hug.svg  https://ik.imagekit.io/scenify/005-date.svg
-        //path:[[ 60, 0]]
-      });
-    }
-
-  },[editor]);
+  /*   //暂时没搞明白是什么
+    const addStaticPath = React.useCallback(()=>{
+      //需要在nginx里配置一下跨域
+      if(editor){
+        editor.objects.add({
+          type:'StaticPath',
+          fill:'#000000',//https://tstatic.redocn.com/react/images/001-hug.svg  https://ik.imagekit.io/scenify/005-date.svg
+          //path:[[ 60, 0]]
+        });
+      }
+  
+    },[editor]); */
 
   /* 
   
@@ -93,9 +107,9 @@ function App() {
   
   */
   //设计好后，可以存成svg ,数据从里提取
-  const addElements = React.useCallback(()=>{
+  const addElements = React.useCallback(() => {
     //需要在nginx里配置一下跨域
-    if(editor){
+    if (editor) {
       const item: any = {
         left: 0,
         top: 0,
@@ -224,17 +238,17 @@ function App() {
           ["z"],
           ["M", 410.941406, 189.394531],
         ]
-        
-        
-       ,
+
+
+        ,
         fill: "#CBCBCB",
         metadata: {},
         preview: "https://ik.imagekit.io/scenify/1635014340531_452464.png",
         id: "vAE3f8-4M0-2j5PF04cVY",
       };
-      
-     
-      
+
+
+
       /* {
         left: 0,
         top: 0,
@@ -254,111 +268,128 @@ function App() {
       editor.objects.add(item);
     }
 
-  },[editor]);
+  }, [editor]);
 
   //设置透明度
-  const changeOpacity = React.useCallback((event:any)=>{
-    console.log('event=',event);
-    setState({ opacity: event.target.value })
-    if(editor){
-      editor.objects.update({opacity:event.target.value/100});
+  const changeOpacity = (event: any) => {
+    console.log('event=', event);
+    setOpacity( event.target.value )
+    // if(editor){
+    //   editor.objects.update({opacity:event.target.value/100});
+    // }
+  }
+
+  React.useEffect(() => {
+    console.log("@");
+    if (editor) {
+      editor.objects.update({ opacity: opacity / 100 });
     }
-  },[activeObject])
+
+  }, [opacity, activeObject]);
+
+  const handleChangeSize = () => {
+    //console.log("frameWidth=",frameWidth);
+
+    if (editor) {
+      
+      editor.frame.resize({width:parseInt(frameWidth),height:parseInt(frameHeight)});
+    }
+  }
 
   //撤销
-  const handleUndo = React.useCallback(()=>{
-    if(editor){
+  const handleUndo = React.useCallback(() => {
+    if (editor) {
       editor.history.undo();
     }
-  },[editor]);
+  }, [editor]);
 
   //取消撤销
-  const handleRedo = React.useCallback(()=>{
-    if(editor){
+  const handleRedo = React.useCallback(() => {
+    if (editor) {
       editor.history.redo();
     }
-  },[editor]);
+  }, [editor]);
 
   //删除
-  const handleDelete = React.useCallback(()=>{
-    if(editor){
-      editor.objects.remove() ;
+  const handleDelete = React.useCallback(() => {
+    if (editor) {
+      editor.objects.remove();
     }
-  },[editor]);
-  
+  }, [editor]);
+
   //复制当前层
-  const handleClone = React.useCallback(()=>{
-    if(editor){
-      editor.objects.clone() ;
+  const handleClone = React.useCallback(() => {
+    if (editor) {
+      editor.objects.clone();
     }
-  },[editor]);
+  }, [editor]);
 
   //锁定当前层
-  const handleLock = React.useCallback(()=>{
-    if(editor){
-      editor.objects.lock() ;
+  const handleLock = React.useCallback(() => {
+    if (editor) {
+      editor.objects.lock();
     }
-  },[editor]);
+  }, [editor]);
 
   //解除当前图层的锁定
-  const handlelock = React.useCallback(()=>{
-    if(editor){
-      editor.objects.unlock() ;
+  const handlelock = React.useCallback(() => {
+    if (editor) {
+      editor.objects.unlock();
     }
-  },[editor]);
+  }, [editor]);
 
-  
+
 
   //重置,重置后不能撤销和不能取消撤销了。从当前开始记录历史
-  const handleReset = React.useCallback(()=>{
-    if(editor){
-      console.log('editor.history',editor.history);
+  const handleReset = React.useCallback(() => {
+    if (editor) {
+      console.log('editor.history', editor.history);
       editor.history.reset();
     }
-  },[editor]);
+  }, [editor]);
 
   //更新尺寸
   // const applyResize = () => {
-    
+
   //   if (editor) {
   //     editor.frame.resize({
   //       width: parseInt(width),
   //       height: parseInt(height),
   //     })
-      
+
   //   }
-    
+
   // }
 
 
   //StaticGroup，DynamicGroup，DynamicPath，DynamicImage， 不知道怎么操作，在 react-design-editor  搜不到相关代码
 
-/*   {
-    id: "E2mcHFkwGA-MTJcfl3Abs",
-    name: "StaticPath",
-    angle: 0,
-    stroke: null,
-    strokeWidth: 0,
-    left: 328,
-    top: 574.22,
-    width: 60,
-    height: 60,
-    opacity: 1,
-    originX: "left",
-    originY: "top",
-    scaleX: 9.19,
-    scaleY: 2,
-    type: "StaticPath",
-    flipX: false,
-    flipY: false,
-    skewX: 0,
-    skewY: 0,
-    visible: true,
-    shadow: null,
-    path: [["M", 60, 0], ["L", 0, 0], ["L", 0, 60], ["L", 60, 60], ["L", 60, 0], ["Z"]],
-    fill: "#ff4040",
-    metadata: {},
-  } */
+  /*   {
+      id: "E2mcHFkwGA-MTJcfl3Abs",
+      name: "StaticPath",
+      angle: 0,
+      stroke: null,
+      strokeWidth: 0,
+      left: 328,
+      top: 574.22,
+      width: 60,
+      height: 60,
+      opacity: 1,
+      originX: "left",
+      originY: "top",
+      scaleX: 9.19,
+      scaleY: 2,
+      type: "StaticPath",
+      flipX: false,
+      flipY: false,
+      skewX: 0,
+      skewY: 0,
+      visible: true,
+      shadow: null,
+      path: [["M", 60, 0], ["L", 0, 0], ["L", 0, 60], ["L", 60, 60], ["L", 60, 0], ["Z"]],
+      fill: "#ff4040",
+      metadata: {},
+    } */
 
 
   return (
@@ -378,12 +409,22 @@ function App() {
           justifyContent: "center",
         }}
       >
-        画布尺寸：
-        <br />
-        透明度：<input value={state.opacity} onChange={changeOpacity}/>
+        画布尺寸：宽<input onChange={(event) => { setFrameWidth(event.target.value) }} style={{ width: '150px' }} value={frameWidth} type="text" />
+        高<input onChange={(event) => { setFrameHeight(  event.target.value ) }} style={{ width: '150px' }} value={frameHeight} type="text" />
+        <button onClick={handleChangeSize}>resize</button>
+      </div>
+      <div
+        style={{
+          height: "80px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        透明度：<input type="text" style={{ width: '50px' }} value={opacity} onChange={changeOpacity} />
         <button onClick={handleClone}>clone</button>
         <button onClick={handleDelete}>delete</button>
-        <button onClick={handleLock}>lock</button>  
+        <button onClick={handleLock}>lock</button>
         <button onClick={handlelock}>unlock</button>
         <button onClick={handleUndo}>undo</button>
         <button onClick={handleRedo}>redo</button>
@@ -393,10 +434,10 @@ function App() {
         <button onClick={addBackgroundImage}>ADD BackgroundImage</button>
         <button onClick={addBackground}>ADD Background</button>
         <button onClick={addStaticVector}>ADD StaticVector</button>
-       {/*  <button onClick={addStaticPath}>ADD StaticPath</button> */}
+        {/*  <button onClick={addStaticPath}>ADD StaticPath</button> */}
         <button onClick={addElements}>ADD Elements</button>
       </div>
-      <div style={{ flex: 1, display:"flex" }}>
+      <div style={{ flex: 1, display: "flex" }}>
         <Canvas />
       </div>
     </div>
