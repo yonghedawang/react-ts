@@ -4,8 +4,9 @@ ui组件 baseui
 https://baseweb.design/
 
 #编辑器sdk
+pnpm install
 @layerhub-io/react
-
+@layerhub-io/types
 #样式组件
 styletron-engine-atomic
 styletron-react
