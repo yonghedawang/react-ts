@@ -1,9 +1,21 @@
 import React from "react";
-import { Canvas, useEditor, useActiveObject,useFrame } from "@layerhub-io/react";
-import { IScene } from "@layerhub-io/types"
-
+import { Canvas, useEditor, useActiveObject, useFrame } from "@layerhub-io/react";
+import { IFrame,IScene } from "@layerhub-io/types"
+import { nanoid } from 'nanoid'
 
 function App() {
+
+  interface IDesign {
+    id: string
+    name: string
+    frame: IFrame
+    type: string
+    scenes: any[]
+    previews: { id: string; src: string }[]
+    metadata: {}
+    published: boolean
+  }
+
   const editor = useEditor();
   const frame = useFrame()
   const activeObject = useActiveObject() as any
@@ -11,27 +23,120 @@ function App() {
   const [frameWidth, setFrameWidth] = React.useState(1000)
   const [frameHeight, setFrameHeight] = React.useState(1000)
   const [backgroundColor, setBackgroundColor] = React.useState('#ffffff')
+  const [scenes, setScenes] = React.useState<IScene[]>([]);
+  const [currentScene,setCurrentScene] = React.useState<IScene>();
+  const [currentDesign,setCurrentDesign] = React.useState<IDesign>();
+  const [currentPreview,setCurrentPreview] = React.useState<string>()
+  
 
+  const loadGraphicTemplate = async (payload: IDesign) => {
+    const scenes: IScene[] = []
+    const { scenes: scns, ...design } = payload
 
+    for (const scn of scns) {
+      const scene: IScene = {
+        name: scn.name,
+        frame: payload.frame,
+        id: scn.id || nanoid(),
+        layers: scn.layers,
+        metadata: {},
+      }
+      
+      
+      const preview = (await editor.renderer.render(scene)) as string
+     // console.log(preview);
+      scenes.push({ ...scene, preview })
+      // console.log(scenes[0].layers);
+      setScenes(scenes)
+      setCurrentScene(scenes[0])
+      //setCurrentDesign(design)
+    }
 
+    //return { scenes, design: design as IDesign }
+  }
+
+  React.useEffect(() => {
+    if (editor) {
+      editor.scene.importFromJSON(currentScene);
+    }
+    console.log("currentScene changed");
+  },[currentScene]);
+
+  React.useEffect(() => {
+    
+    console.log("useEffect scenes changed");
+  },[scenes]);
+
+  React.useEffect(() => {
+    
+    console.log("useEffect Canvas changed");
+  },[Canvas]);
 
   
 
+
   //第一次加载
   React.useEffect(() => {
-    if(frame){
+    if (frame) {
       //console.log("background=>",editor.canvas.backgroundColor);
-      
+
       setFrameWidth(frame.width)
       setFrameHeight(frame.height)
       setBackgroundColor('#ffffff');
-                          //{"id":"98PZEYOW0oR-TbmSEQ-MI","type":"GRAPHIC","name":"Untitled Design","frame":{"width":1200,"height":1200},"scenes":[{"id":"U1S5-P_wQQMyVceKnNCz4","layers":[{"id":"background","name":"Initial Frame","angle":0,"stroke":null,"strokeWidth":0,"left":0,"top":0,"width":1200,"height":1200,"opacity":1,"originX":"left","originY":"top","scaleX":1,"scaleY":1,"type":"Background","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":{"color":"#fcfcfc","blur":4,"offsetX":0,"offsetY":0,"affectStroke":false,"nonScaling":false},"fill":"#ffffff","metadata":{}},{"id":"9VWsxoB_O8LSAkCIRjNFY","name":"StaticPath","angle":0,"stroke":null,"strokeWidth":0,"left":103.25999999999999,"top":54.72999999999999,"width":498.84,"height":436.27,"opacity":1,"originX":"left","originY":"top","scaleX":0.48,"scaleY":0.48,"type":"StaticPath","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"preview":"https://ik.imagekit.io/scenify/1635014101144_519480.png","path":[["M",497.434,243.764],["L",377.754,36.403999999999996],["C",376.05600000000004,33.37,372.90700000000004,31.432999999999996,369.434,31.283999999999995],["L",130.71400000000003,31.283999999999995],["C",127.02300000000002,31.250999999999994,123.59900000000003,33.206999999999994,121.75400000000002,36.403999999999996],["L",1.434000000000026,244.404],["C",-0.477999999999974,247.626,-0.477999999999974,251.635,1.434000000000026,254.857],["L",121.75400000000002,463.07],["C",123.65600000000002,465.803,126.74500000000002,467.467,130.074,467.55],["L",369.434,467.55],["C",372.77200000000005,467.502,375.877,465.83,377.754,463.07],["L",497.434,254.21699999999998],["C",499.302,250.983,499.302,246.999,497.434,243.764],["z"]],"fill":"#CBCBCB","metadata":{}},{"id":"WZLRN4LYlahg798kLogBm","name":"StaticImage","angle":0,"stroke":null,"strokeWidth":0,"left":401.28999999999996,"top":275,"width":650,"height":650,"opacity":1,"originX":"left","originY":"top","scaleX":1,"scaleY":1,"type":"StaticImage","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"src":"https://images.pexels.com/photos/670741/pexels-photo-670741.jpeg?auto=compress&cs=tinysrgb&h=650&w=940","cropX":0,"cropY":0,"metadata":{}},{"id":"A6rI0zdsoHWc0Jaht2vDG","name":"StaticText","angle":0,"stroke":null,"strokeWidth":0,"left":415.79999999999995,"top":75.13,"width":577.32,"height":103.96,"opacity":1,"originX":"left","originY":"top","scaleX":1,"scaleY":1,"type":"StaticText","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"charSpacing":0,"fill":"#333333","fontFamily":"OpenSans-Regular","fontSize":92,"lineHeight":1.16,"text":"simple text","textAlign":"center","fontURL":"https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.ttf","metadata":{}},{"id":"Kv__-PW6UJAh9S6lDcg_l","name":"StaticVector","angle":0,"stroke":null,"strokeWidth":0,"left":111.48000000000002,"top":396.73,"width":512,"height":512,"opacity":1,"originX":"left","originY":"top","scaleX":0.45,"scaleY":0.45,"type":"StaticVector","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"src":"https://ik.imagekit.io/scenify/007-hug.svg","colorMap":{"#231f20":"#231f20","#007dc4":"#007dc4","rgb(0,0,0)":"rgb(0,0,0)","#fff":"#fff","#ffc10e":"#ffc10e"},"metadata":{}}],"name":"Untitled design"}],"metadata":{},"preview":""}
-      
+      //{"id":"98PZEYOW0oR-TbmSEQ-MI","type":"GRAPHIC","name":"Untitled Design","frame":{"width":1200,"height":1200},"scenes":[{"id":"U1S5-P_wQQMyVceKnNCz4","layers":[{"id":"background","name":"Initial Frame","angle":0,"stroke":null,"strokeWidth":0,"left":0,"top":0,"width":1200,"height":1200,"opacity":1,"originX":"left","originY":"top","scaleX":1,"scaleY":1,"type":"Background","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":{"color":"#fcfcfc","blur":4,"offsetX":0,"offsetY":0,"affectStroke":false,"nonScaling":false},"fill":"#ffffff","metadata":{}},{"id":"9VWsxoB_O8LSAkCIRjNFY","name":"StaticPath","angle":0,"stroke":null,"strokeWidth":0,"left":103.25999999999999,"top":54.72999999999999,"width":498.84,"height":436.27,"opacity":1,"originX":"left","originY":"top","scaleX":0.48,"scaleY":0.48,"type":"StaticPath","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"preview":"https://ik.imagekit.io/scenify/1635014101144_519480.png","path":[["M",497.434,243.764],["L",377.754,36.403999999999996],["C",376.05600000000004,33.37,372.90700000000004,31.432999999999996,369.434,31.283999999999995],["L",130.71400000000003,31.283999999999995],["C",127.02300000000002,31.250999999999994,123.59900000000003,33.206999999999994,121.75400000000002,36.403999999999996],["L",1.434000000000026,244.404],["C",-0.477999999999974,247.626,-0.477999999999974,251.635,1.434000000000026,254.857],["L",121.75400000000002,463.07],["C",123.65600000000002,465.803,126.74500000000002,467.467,130.074,467.55],["L",369.434,467.55],["C",372.77200000000005,467.502,375.877,465.83,377.754,463.07],["L",497.434,254.21699999999998],["C",499.302,250.983,499.302,246.999,497.434,243.764],["z"]],"fill":"#CBCBCB","metadata":{}},{"id":"WZLRN4LYlahg798kLogBm","name":"StaticImage","angle":0,"stroke":null,"strokeWidth":0,"left":401.28999999999996,"top":275,"width":650,"height":650,"opacity":1,"originX":"left","originY":"top","scaleX":1,"scaleY":1,"type":"StaticImage","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"src":"https://images.pexels.com/photos/670741/pexels-photo-670741.jpeg?auto=compress&cs=tinysrgb&h=650&w=940","cropX":0,"cropY":0,"metadata":{}},{"id":"A6rI0zdsoHWc0Jaht2vDG","name":"StaticText","angle":0,"stroke":null,"strokeWidth":0,"left":415.79999999999995,"top":75.13,"width":577.32,"height":103.96,"opacity":1,"originX":"left","originY":"top","scaleX":1,"scaleY":1,"type":"StaticText","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"charSpacing":0,"fill":"#333333","fontFamily":"OpenSans-Regular","fontSize":92,"lineHeight":1.16,"text":"simple text","textAlign":"center","fontURL":"https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.ttf","metadata":{}},{"id":"Kv__-PW6UJAh9S6lDcg_l","name":"StaticVector","angle":0,"stroke":null,"strokeWidth":0,"left":111.48000000000002,"top":396.73,"width":512,"height":512,"opacity":1,"originX":"left","originY":"top","scaleX":0.45,"scaleY":0.45,"type":"StaticVector","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"src":"https://ik.imagekit.io/scenify/007-hug.svg","colorMap":{"#231f20":"#231f20","#007dc4":"#007dc4","rgb(0,0,0)":"rgb(0,0,0)","#fff":"#fff","#ffc10e":"#ffc10e"},"metadata":{}}],"name":"Untitled design"}],"metadata":{},"preview":""}
+
       //导入json,一个画布
-      const design:IScene = {"id":"98PZEYOW0oR-TbmSEQ-MI","name":"test import","frame":{"width":1200,"height":1200},"layers":[{"id":"background","name":"Initial Frame","angle":0,"stroke":null,"strokeWidth":0,"left":0,"top":0,"width":1200,"height":1200,"opacity":1,"originX":"left","originY":"top","scaleX":1,"scaleY":1,"type":"Background","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":{"color":"#fcfcfc","blur":4,"offsetX":0,"offsetY":0,"affectStroke":false,"nonScaling":false},"fill":"#ffffff","metadata":{}},{"id":"9VWsxoB_O8LSAkCIRjNFY","name":"StaticPath","angle":0,"stroke":null,"strokeWidth":0,"left":103.25999999999999,"top":54.72999999999999,"width":498.84,"height":436.27,"opacity":1,"originX":"left","originY":"top","scaleX":0.48,"scaleY":0.48,"type":"StaticPath","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"preview":"https://ik.imagekit.io/scenify/1635014101144_519480.png","path":[["M",497.434,243.764],["L",377.754,36.403999999999996],["C",376.05600000000004,33.37,372.90700000000004,31.432999999999996,369.434,31.283999999999995],["L",130.71400000000003,31.283999999999995],["C",127.02300000000002,31.250999999999994,123.59900000000003,33.206999999999994,121.75400000000002,36.403999999999996],["L",1.434000000000026,244.404],["C",-0.477999999999974,247.626,-0.477999999999974,251.635,1.434000000000026,254.857],["L",121.75400000000002,463.07],["C",123.65600000000002,465.803,126.74500000000002,467.467,130.074,467.55],["L",369.434,467.55],["C",372.77200000000005,467.502,375.877,465.83,377.754,463.07],["L",497.434,254.21699999999998],["C",499.302,250.983,499.302,246.999,497.434,243.764],["z"]],"fill":"#CBCBCB","metadata":{}},{"id":"WZLRN4LYlahg798kLogBm","name":"StaticImage","angle":0,"stroke":null,"strokeWidth":0,"left":401.28999999999996,"top":275,"width":650,"height":650,"opacity":1,"originX":"left","originY":"top","scaleX":1,"scaleY":1,"type":"StaticImage","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"src":"https://images.pexels.com/photos/670741/pexels-photo-670741.jpeg?auto=compress&cs=tinysrgb&h=650&w=940","cropX":0,"cropY":0,"metadata":{}},{"id":"A6rI0zdsoHWc0Jaht2vDG","name":"StaticText","angle":0,"stroke":null,"strokeWidth":0,"left":415.79999999999995,"top":75.13,"width":577.32,"height":103.96,"opacity":1,"originX":"left","originY":"top","scaleX":1,"scaleY":1,"type":"StaticText","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"charSpacing":0,"fill":"#333333","fontFamily":"OpenSans-Regular","fontSize":92,"lineHeight":1.16,"text":"simple text","textAlign":"center","fontURL":"https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.ttf","metadata":{}},{"id":"Kv__-PW6UJAh9S6lDcg_l","name":"StaticVector","angle":0,"stroke":null,"strokeWidth":0,"left":111.48000000000002,"top":396.73,"width":512,"height":512,"opacity":1,"originX":"left","originY":"top","scaleX":0.45,"scaleY":0.45,"type":"StaticVector","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"src":"https://ik.imagekit.io/scenify/007-hug.svg","colorMap":{"#231f20":"#231f20","#007dc4":"#007dc4","rgb(0,0,0)":"rgb(0,0,0)","#fff":"#fff","#ffc10e":"#ffc10e"},"metadata":{}}],"metadata":{},"preview":""}
-      editor.scene.importFromJSON(design);
+      // const design: IScene = { "id": "98PZEYOW0oR-TbmSEQ-MI", "name": "test import", "frame": { "width": 1200, "height": 1200 }, "layers": [{ "id": "background", "name": "Initial Frame", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 0, "top": 0, "width": 1200, "height": 1200, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "Background", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": { "color": "#fcfcfc", "blur": 4, "offsetX": 0, "offsetY": 0, "affectStroke": false, "nonScaling": false }, "fill": "#ffffff", "metadata": {} }, { "id": "9VWsxoB_O8LSAkCIRjNFY", "name": "StaticPath", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 103.25999999999999, "top": 54.72999999999999, "width": 498.84, "height": 436.27, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 0.48, "scaleY": 0.48, "type": "StaticPath", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "preview": "https://ik.imagekit.io/scenify/1635014101144_519480.png", "path": [["M", 497.434, 243.764], ["L", 377.754, 36.403999999999996], ["C", 376.05600000000004, 33.37, 372.90700000000004, 31.432999999999996, 369.434, 31.283999999999995], ["L", 130.71400000000003, 31.283999999999995], ["C", 127.02300000000002, 31.250999999999994, 123.59900000000003, 33.206999999999994, 121.75400000000002, 36.403999999999996], ["L", 1.434000000000026, 244.404], ["C", -0.477999999999974, 247.626, -0.477999999999974, 251.635, 1.434000000000026, 254.857], ["L", 121.75400000000002, 463.07], ["C", 123.65600000000002, 465.803, 126.74500000000002, 467.467, 130.074, 467.55], ["L", 369.434, 467.55], ["C", 372.77200000000005, 467.502, 375.877, 465.83, 377.754, 463.07], ["L", 497.434, 254.21699999999998], ["C", 499.302, 250.983, 499.302, 246.999, 497.434, 243.764], ["z"]], "fill": "#CBCBCB", "metadata": {} }, { "id": "WZLRN4LYlahg798kLogBm", "name": "StaticImage", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 401.28999999999996, "top": 275, "width": 650, "height": 650, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "StaticImage", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "src": "https://images.pexels.com/photos/670741/pexels-photo-670741.jpeg?auto=compress&cs=tinysrgb&h=650&w=940", "cropX": 0, "cropY": 0, "metadata": {} }, { "id": "A6rI0zdsoHWc0Jaht2vDG", "name": "StaticText", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 415.79999999999995, "top": 75.13, "width": 577.32, "height": 103.96, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "StaticText", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "charSpacing": 0, "fill": "#333333", "fontFamily": "OpenSans-Regular", "fontSize": 92, "lineHeight": 1.16, "text": "simple text", "textAlign": "center", "fontURL": "https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.ttf", "metadata": {} }, { "id": "Kv__-PW6UJAh9S6lDcg_l", "name": "StaticVector", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 111.48000000000002, "top": 396.73, "width": 512, "height": 512, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 0.45, "scaleY": 0.45, "type": "StaticVector", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "src": "https://ik.imagekit.io/scenify/007-hug.svg", "colorMap": { "#231f20": "#231f20", "#007dc4": "#007dc4", "rgb(0,0,0)": "rgb(0,0,0)", "#fff": "#fff", "#ffc10e": "#ffc10e" }, "metadata": {} }], "metadata": {}, "preview": "" }
+      // editor.scene.importFromJSON(design);
+      // console.log(design);
+      const template = {previews:[],"published":true, "id": "N1zgp3tfX77pFGRhVAJne", "type": "GRAPHIC", "name": "Untitled Design", "frame": { "width": 1200, "height": 1200 }, "scenes": [{ "id": "qKDtWwlWgZsUQ6tvRIaWX", "layers": [{ "id": "background", "name": "Initial Frame", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 0, "top": 0, "width": 1200, "height": 1200, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "Background", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": { "color": "#fcfcfc", "blur": 4, "offsetX": 0, "offsetY": 0, "affectStroke": false, "nonScaling": false }, "fill": "#ffffff", "metadata": {} }, { "id": "geF55nXZonGCHE7qz_CC1", "name": "StaticText", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 409.13, "top": 489.81, "width": 420, "height": 103.96, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "StaticText", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "charSpacing": 0, "fill": "#333333", "fontFamily": "OpenSans-Regular", "fontSize": 92, "lineHeight": 1.16, "text": "scene1", "textAlign": "center", "fontURL": "https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.ttf", "metadata": {} }], "name": "Untitled design" }, { "id": "9SAW3VwN-Wf47aDgQb3Ml", "layers": [{ "id": "background", "name": "Initial Frame", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 0, "top": 0, "width": 1200, "height": 1200, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "Background", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": { "color": "#fcfcfc", "blur": 4, "offsetX": 0, "offsetY": 0, "affectStroke": false, "nonScaling": false }, "fill": "#ffffff", "metadata": {} }, { "id": "TuUsMXh-7BX2LpdZs3Cq2", "name": "StaticText", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 419.13, "top": 499.81, "width": 420, "height": 103.96, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "StaticText", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "charSpacing": 0, "fill": "#333333", "fontFamily": "OpenSans-Regular", "fontSize": 92, "lineHeight": 1.16, "text": "scene2", "textAlign": "center", "fontURL": "https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.ttf" }], "name": "Untitled design" }, { "id": "BlZ2k3NWrDJIOlGleOvnA", "layers": [{ "id": "background", "name": "Initial Frame", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 0, "top": 0, "width": 1200, "height": 1200, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "Background", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": { "color": "#fcfcfc", "blur": 4, "offsetX": 0, "offsetY": 0, "affectStroke": false, "nonScaling": false }, "fill": "#ffffff", "metadata": {} }, { "id": "1y4hHIZFAA12vI13d8Xgj", "name": "StaticText", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 429.13, "top": 509.81, "width": 420, "height": 103.96, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "StaticText", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "charSpacing": 0, "fill": "#333333", "fontFamily": "OpenSans-Regular", "fontSize": 92, "lineHeight": 1.16, "text": "scene3", "textAlign": "center", "fontURL": "https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.ttf" }], "name": "Untitled design" }], "metadata": {}, "preview": "" };
+      const loadedDesign =  loadGraphicTemplate(template);
+
+      
+      
+      /* 
+      const _scenes = template.scenes;
+      let _scenes_new = template.scenes;
+      console.log(_scenes);
+      
+      //console.log(scenes);
+      for (const scn of _scenes) {
+
+        const scene: IScene = {
+          name: scn.name,
+          frame: template.frame,
+          id: scn.id || nanoid(),
+          layers: scn.layers,
+          metadata: {},
+        }
+        editor.scene.importFromJSON(scene);
+        const newPreview =  editor.renderer.render(scene)
+        let new_scn = { ...scene, newPreview }
+        //console.log(newPreview);
+        _scenes_new.push(new_scn)
+      }
+      console.log(_scenes_new)
+      setScenes(_scenes_new); */
+      console.log("useEffect editor changed");
     }
-    
+
+    let watcher = async () => {
+      const updatedTemplate = editor.scene.exportToJSON()
+      const updatedPreview = (await editor.renderer.render(updatedTemplate)) as string
+      setCurrentPreview(updatedPreview)
+      console.log("useEffect editor watcher");
+    }
+
+    if (editor) {
+      editor.on("history:changed", watcher)
+    }
+    console.log("useEffect editor");
+    return () => {
+      if (editor) {
+        editor.off("history:changed", watcher)
+      }
+    }
+
 
   }, [editor]);
 
@@ -288,18 +393,18 @@ function App() {
   //设置透明度
   const changeOpacity = (event: any) => {
     console.log('event=', event);
-    setOpacity( event.target.value )
+    setOpacity(event.target.value)
     // if(editor){
     //   editor.objects.update({opacity:event.target.value/100});
     // }
   }
 
   React.useEffect(() => {
-    console.log("@");
+   // console.log("@");
     if (editor) {
       editor.objects.update({ opacity: opacity / 100 });
     }
-
+    console.log("useEffect opacity activeObject changed");
   }, [opacity, activeObject]);
 
   //更新尺寸
@@ -307,8 +412,8 @@ function App() {
     //console.log("frameWidth=",frameWidth);
 
     if (editor) {
-      
-      editor.frame.resize({width:parseInt(frameWidth),height:parseInt(frameHeight)});
+
+      editor.frame.resize({ width: parseInt(frameWidth), height: parseInt(frameHeight) });
     }
   }
 
@@ -320,7 +425,7 @@ function App() {
     }
   }
 
-  
+
 
   //撤销
   const handleUndo = React.useCallback(() => {
@@ -374,7 +479,7 @@ function App() {
     }
   }, [editor]);
 
-  
+
 
 
   //StaticGroup，DynamicGroup，DynamicPath，DynamicImage， 不知道怎么操作，在 react-design-editor  搜不到相关代码
@@ -425,16 +530,16 @@ function App() {
         }}
       >
         画布尺寸：宽<input onChange={(event) => { setFrameWidth(event.target.value) }} style={{ width: '150px' }} value={frameWidth} type="text" />
-        高<input onChange={(event) => { setFrameHeight(  event.target.value ) }} style={{ width: '150px' }} value={frameHeight} type="text" />
+        高<input onChange={(event) => { setFrameHeight(event.target.value) }} style={{ width: '150px' }} value={frameHeight} type="text" />
         <button onClick={handleChangeSize}>resize</button>
 
         背景色：<input
-          
-            value={backgroundColor}
-            onChange={(e) => handleChangeBackgroundColor( (e.target as any).value)}
-            placeholder="#000000"
-            
-          />
+
+          value={backgroundColor}
+          onChange={(e) => handleChangeBackgroundColor((e.target as any).value)}
+          placeholder="#000000"
+
+        />
       </div>
       <div
         style={{
@@ -462,6 +567,11 @@ function App() {
       </div>
       <div style={{ flex: 1, display: "flex" }}>
         <Canvas />
+      </div>
+      <div style={{height:"100px", flex: 1, display: "flex" }}>
+      {scenes.map((page, index) => (
+              <img  style={{"width":"150px","height":"150px"}} key={index} src={page.id=== currentScene.id ? currentPreview : page.preview} />
+            ))}
       </div>
     </div>
   );
