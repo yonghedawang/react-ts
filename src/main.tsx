@@ -1,15 +1,12 @@
 import ReactDOM from "react-dom/client"
-import Provider from "./Provider"
-import Router from "./Router"
-import Container from "./Container"
-import "./styles/styles.css"
-
+import { Provider as LayerhubProvider } from "@layerhub-io/react"
+import App from "./App"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <Provider>
-    <Container>
-      <Router />
-    </Container>
-  </Provider>
+  <LayerhubProvider>
+    
+      <App />
+
+  </LayerhubProvider>
 )
 
