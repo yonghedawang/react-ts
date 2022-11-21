@@ -23,6 +23,7 @@ function App() {
   const [frameWidth, setFrameWidth] = React.useState(1000)
   const [frameHeight, setFrameHeight] = React.useState(1000)
   const [backgroundColor, setBackgroundColor] = React.useState('#ffffff')
+  const [activeObjectColor, setActiveObjectColor] = React.useState('#000000')
   const [scenes, setScenes] = React.useState<IScene[]>([]);
   const [currentScene, setCurrentScene] = React.useState<IScene>();
   const [currentDesign, setCurrentDesign] = React.useState<IDesign>();
@@ -32,7 +33,7 @@ function App() {
   const loadGraphicTemplate = async (payload: IDesign) => {
     const scenes: IScene[] = []
     const { scenes: scns, ...design } = payload
-
+    console.log('loadGraphicTemplate');
     for (const scn of scns) {
       const scene: IScene = {
         name: scn.name,
@@ -55,26 +56,9 @@ function App() {
     //return { scenes, design: design as IDesign }
   }
 
-  React.useEffect(() => {
-    if (editor) {
-      console.log("currentScene changed");
-      editor.scene.importFromJSON(currentScene);
 
-      
 
-    }
 
-  }, [currentScene]);
-
-  React.useEffect(() => {
-
-    console.log("useEffect scenes changed");
-  }, [scenes]);
-
-  React.useEffect(() => {
-
-    console.log("useEffect Canvas changed");
-  }, [Canvas]);
 
 
 
@@ -83,7 +67,7 @@ function App() {
   React.useEffect(() => {
     if (frame) {
       //console.log("background=>",editor.canvas.backgroundColor);
-
+      console.log('第一次加载 json');
       setFrameWidth(frame.width)
       setFrameHeight(frame.height)
       setBackgroundColor('#ffffff');
@@ -96,40 +80,18 @@ function App() {
       const template = { previews: [], "published": true, "id": "N1zgp3tfX77pFGRhVAJne", "type": "GRAPHIC", "name": "Untitled Design", "frame": { "width": 1200, "height": 1200 }, "scenes": [{ "id": "qKDtWwlWgZsUQ6tvRIaWX", "layers": [{ "id": "background", "name": "Initial Frame", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 0, "top": 0, "width": 1200, "height": 1200, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "Background", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": { "color": "#fcfcfc", "blur": 4, "offsetX": 0, "offsetY": 0, "affectStroke": false, "nonScaling": false }, "fill": "#ffffff", "metadata": {} }, { "id": "geF55nXZonGCHE7qz_CC1", "name": "StaticText", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 409.13, "top": 489.81, "width": 420, "height": 103.96, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "StaticText", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "charSpacing": 0, "fill": "#333333", "fontFamily": "OpenSans-Regular", "fontSize": 92, "lineHeight": 1.16, "text": "scene1", "textAlign": "center", "fontURL": "https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.ttf", "metadata": {} }], "name": "Untitled design" }, { "id": "9SAW3VwN-Wf47aDgQb3Ml", "layers": [{ "id": "background", "name": "Initial Frame", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 0, "top": 0, "width": 1200, "height": 1200, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "Background", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": { "color": "#fcfcfc", "blur": 4, "offsetX": 0, "offsetY": 0, "affectStroke": false, "nonScaling": false }, "fill": "#ffffff", "metadata": {} }, { "id": "TuUsMXh-7BX2LpdZs3Cq2", "name": "StaticText", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 419.13, "top": 499.81, "width": 420, "height": 103.96, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "StaticText", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "charSpacing": 0, "fill": "#333333", "fontFamily": "OpenSans-Regular", "fontSize": 92, "lineHeight": 1.16, "text": "scene2", "textAlign": "center", "fontURL": "https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.ttf" }], "name": "Untitled design" }, { "id": "BlZ2k3NWrDJIOlGleOvnA", "layers": [{ "id": "background", "name": "Initial Frame", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 0, "top": 0, "width": 1200, "height": 1200, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "Background", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": { "color": "#fcfcfc", "blur": 4, "offsetX": 0, "offsetY": 0, "affectStroke": false, "nonScaling": false }, "fill": "#ffffff", "metadata": {} }, { "id": "1y4hHIZFAA12vI13d8Xgj", "name": "StaticText", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 429.13, "top": 509.81, "width": 420, "height": 103.96, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "StaticText", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "charSpacing": 0, "fill": "#333333", "fontFamily": "OpenSans-Regular", "fontSize": 92, "lineHeight": 1.16, "text": "scene3", "textAlign": "center", "fontURL": "https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.ttf" }], "name": "Untitled design" }], "metadata": {}, "preview": "" };
       const loadedDesign = loadGraphicTemplate(template);
 
-
-
-      /* 
-      const _scenes = template.scenes;
-      let _scenes_new = template.scenes;
-      console.log(_scenes);
-      
-      //console.log(scenes);
-      for (const scn of _scenes) {
-
-        const scene: IScene = {
-          name: scn.name,
-          frame: template.frame,
-          id: scn.id || nanoid(),
-          layers: scn.layers,
-          metadata: {},
-        }
-        editor.scene.importFromJSON(scene);
-        const newPreview =  editor.renderer.render(scene)
-        let new_scn = { ...scene, newPreview }
-        //console.log(newPreview);
-        _scenes_new.push(new_scn)
-      }
-      console.log(_scenes_new)
-      setScenes(_scenes_new); */
-      console.log("useEffect editor changed");
+      console.log("useEffect editor changed init json");
     }
 
     let watcher = async () => {
       const updatedTemplate = editor.scene.exportToJSON()
       const updatedPreview = (await editor.renderer.render(updatedTemplate)) as string
       setCurrentPreview(updatedPreview)
-      console.log("useEffect editor watcher");
-      
+      console.log("useEffect editor watcher", updatedTemplate.layers);
+
+
+     
+
       
 
     }
@@ -147,28 +109,148 @@ function App() {
 
   }, [editor]);
 
+  //设置当前画布
+
+    // React.useEffect(() => {
+  //   if (editor) {
+  //     console.log("currentScene changed");
+  //     editor.scene.importFromJSON(currentScene);
+
+      
+
+  //   }
+
+  // }, [currentScene]);
+
+  React.useEffect(() => {
+    if (editor && scenes && currentScene) {
+      console.log("useEffect editor, scenes, currentScene");
+      const isCurrentSceneLoaded = scenes.find((s) => s.id === currentScene?.id)
+      if (!isCurrentSceneLoaded) {
+        setCurrentScene(scenes[0])
+      }
+    }
+  }, [editor, scenes, currentScene])
+
+
+
   //点击画图的预览图
   const changePage = React.useCallback(
     async (page: any) => {
-      setCurrentPreview("")
+      //setCurrentPreview("")
       if (editor) {
-        console.log("changePage");
+
+        console.log("changePage",page);
         const updatedTemplate = editor.scene.exportToJSON()
         const updatedPreview = await editor.renderer.render(updatedTemplate)
-
+        console.log("changePage 140");
         const updatedPages = scenes.map((p) => {
           if (p.id === updatedTemplate.id) {
             return { ...updatedTemplate, preview: updatedPreview }
           }
           return p
         }) as any[]
-        console.log('updatedPages',updatedPages);
+        console.log('changePage updatedPages',updatedPages);
         setScenes(updatedPages)
         setCurrentScene(page)
+        console.log("changePage end");
       }
     },
     [editor, scenes, currentScene]
   )
+
+    //增加画布
+  const addScene = React.useCallback(async () => {
+    setCurrentPreview("")
+    const updatedTemplate = editor.scene.exportToJSON()
+    const updatedPreview = await editor.renderer.render(updatedTemplate)
+
+    const updatedPages = scenes.map((p) => {
+      if (p.id === updatedTemplate.id) {
+        return { ...updatedTemplate, preview: updatedPreview }
+      }
+      return p
+    })
+
+    const defaultTemplate = getDefaultTemplate(currentDesign.frame)
+    const newPreview = await editor.renderer.render(defaultTemplate)
+    const newPage = { ...defaultTemplate, id: nanoid(), preview: newPreview } as any
+    const newPages = [...updatedPages, newPage] as any[]
+    setScenes(newPages)
+    setCurrentScene(newPage)
+  }, [scenes, currentDesign])
+
+  const updateCurrentScene = React.useCallback(
+    async (design: IScene) => {
+      console.log('updateCurrentScene 1');
+      console.log(design);
+      await editor.scene.importFromJSON(design)
+      const updatedPreview = (await editor.renderer.render(design)) as string
+      setCurrentPreview(updatedPreview)
+      console.log('updateCurrentScene 2');
+    },
+    [editor, currentScene]
+  )
+
+  const getDefaultTemplate = ({ width, height }: IFrame) => {
+    return {
+      id: nanoid(),
+      frame: {
+        width:frameWidth,
+        height:frameHeight,
+      },
+      layers: [
+        {
+          id: "background",
+          name: "Initial Frame",
+          left: 0,
+          top: 0,
+          width:frameWidth,
+          height:frameHeight,
+          type: "Background",
+          fill: "#ffffff",
+          metadata: {},
+        },
+      ],
+      metadata: {},
+    }
+  }
+
+  React.useEffect(() => {
+    if (editor) {
+      if (currentScene) {
+        console.log("before updateCurrentScene",currentScene);
+
+        updateCurrentScene(currentScene)
+        console.log("after updateCurrentScene");
+      } else {
+        console.log("before getDefaultTemplate");
+        const defaultTemplate = getDefaultTemplate({
+          width: 1200,
+          height: 1200,
+        })
+        setCurrentDesign({
+          id: nanoid(),
+          frame: defaultTemplate.frame,
+          metadata: {},
+          name: "Untitled Design",
+          preview: "",
+          scenes: [],
+          type: "PRESENTATION",
+        })
+        editor.scene
+          .importFromJSON(defaultTemplate)
+          .then(() => {
+            const initialDesign = editor.scene.exportToJSON() as any
+            editor.renderer.render(initialDesign).then((data) => {
+              setCurrentScene({ ...initialDesign, preview: data })
+              setScenes([{ ...initialDesign, preview: data }])
+            })
+          })
+          .catch(console.log)
+      }
+    }
+  }, [editor, currentScene])
 
   //静态文字
   const addText = React.useCallback(() => {
@@ -420,6 +502,31 @@ function App() {
 
   }, [editor]);
 
+
+  React.useEffect(() => {
+    /* if (activeObject && activeObject.type === "StaticVector") {
+      const objects = activeObject._objects[0]._objects
+      const objectColors = groupBy(objects, "fill")
+      vectorPaths.current = objectColors
+      setState({ ...state, colors: Object.keys(objectColors), colorMap: activeObject.colorMap })
+    } */
+    if(activeObject && activeObject.type){
+      
+      console.log("activeObject",activeObject.type,activeObject);
+      if(activeObject.type === 'StaticPath'){
+        setActiveObjectColor(activeObject.fill);
+      }
+    }
+    
+  }, [activeObject])
+
+  //设置图层颜色
+  const handleChangeActiveObjectColor  = (color:any) => {
+    //console.log("frameWidth=",frameWidth);
+    setActiveObjectColor(color);
+    editor.objects.update({ fill: color })
+  }
+
   //设置透明度
   const changeOpacity = (event: any) => {
     console.log('event=', event);
@@ -559,6 +666,7 @@ function App() {
           justifyContent: "center",
         }}
       >
+        对画布的操作：
         画布尺寸：宽<input onChange={(event) => { setFrameWidth(event.target.value) }} style={{ width: '150px' }} value={frameWidth} type="text" />
         高<input onChange={(event) => { setFrameHeight(event.target.value) }} style={{ width: '150px' }} value={frameHeight} type="text" />
         <button onClick={handleChangeSize}>resize</button>
@@ -570,6 +678,16 @@ function App() {
           placeholder="#000000"
 
         />
+          <button onClick={handleUndo}>undo</button>
+          <button onClick={handleRedo}>redo</button>
+          <button onClick={handleReset}>reset</button>
+          <button onClick={addText}>ADD TEXT</button>
+          <button onClick={addImage}>ADD IMAGE</button>
+          <button onClick={addBackgroundImage}>ADD BackgroundImage</button>
+          <button onClick={addBackground}>ADD Background</button>
+          <button onClick={addStaticVector}>ADD StaticVector</button>
+          {/*  <button onClick={addStaticPath}>ADD StaticPath</button> */}
+          <button onClick={addElements}>ADD Elements</button>
       </div>
       <div
         style={{
@@ -579,28 +697,24 @@ function App() {
           justifyContent: "center",
         }}
       >
+        对当前图层的操作：
         透明度：<input type="text" style={{ width: '50px' }} value={opacity} onChange={changeOpacity} />
+         颜色：<input value={activeObjectColor} onChange={(e) => handleChangeActiveObjectColor((e.target as any).value)} placeholder="#000000" /> 
         <button onClick={handleClone}>clone</button>
         <button onClick={handleDelete}>delete</button>
         <button onClick={handleLock}>lock</button>
         <button onClick={handlelock}>unlock</button>
-        <button onClick={handleUndo}>undo</button>
-        <button onClick={handleRedo}>redo</button>
-        <button onClick={handleReset}>reset</button>
-        <button onClick={addText}>ADD TEXT</button>
-        <button onClick={addImage}>ADD IMAGE</button>
-        <button onClick={addBackgroundImage}>ADD BackgroundImage</button>
-        <button onClick={addBackground}>ADD Background</button>
-        <button onClick={addStaticVector}>ADD StaticVector</button>
-        {/*  <button onClick={addStaticPath}>ADD StaticPath</button> */}
-        <button onClick={addElements}>ADD Elements</button>
+      
+        
       </div>
+      {/* 画布缩略图 */}
       <div style={{ height: "102px", margin: "10px", display: "flex" }}>
         {scenes.map((page, index) => (
-          <div key={index} onClick={changePage} style={page.id === currentScene.id ? { "width": "100px", "height": "100px", border: "solid 1px" } : { "width": "100px", "height": "100px" }}  >
+          <div key={index} onClick={() => changePage(page)} style={page.id === currentScene.id ? { "width": "100px", "height": "100px", border: "solid 1px" } : { "width": "100px", "height": "100px" }}  >
             <img style={{ "width": "100px", "height": "100px" }}  src={page.id === currentScene.id ? currentPreview : page.preview} />
           </div>
         ))}
+        <div onClick={addScene} style={{"width": "100px", "height": "100px",textAlign:'center',verticalAlign:'middle'}}>增加画布</div>
       </div>
       <div style={{ flex: 1, display: "flex" }}>
         <Canvas />

@@ -1,7 +1,7 @@
 import { IScene } from "@layerhub-io/types"
 import React from "react"
 import {ContextMenuSceneRequest, ContextMenuTimelineRequest, DesignType, IDesign} from "~/interfaces/DesignEditor"
-console.log("/src/context/DesignEditor file start");
+
 interface ISceneEditorContext {
   scenes: IScene[]
   setScenes: (value: ((prevState: IScene[]) => IScene[]) | IScene[]) => void
@@ -134,4 +134,3 @@ export const DesignEditorProvider = ({ children }: { children: React.ReactNode }
   return <DesignEditorContext.Provider value={context}>{children}</DesignEditorContext.Provider>
 }
 
-console.log("/src/context/DesignEditor file end");

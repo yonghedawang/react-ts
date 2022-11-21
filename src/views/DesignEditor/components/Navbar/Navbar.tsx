@@ -1,34 +1,28 @@
 import React from "react"
-import { styled, ThemeProvider, DarkTheme,LightTheme } from "baseui"
-import { Theme } from "baseui/theme"
-import { Button, KIND } from "baseui/button"
-import Logo from "~/components/Icons/Logo"
-import useDesignEditorContext from "~/hooks/useDesignEditorContext"
-import Play from "~/components/Icons/Play"
-import { Block } from "baseui/block"
+//import { styled, ThemeProvider, DarkTheme,LightTheme } from "baseui"
+//import { Theme } from "baseui/theme"
+//import { Button, KIND } from "baseui/button"
+//import Logo from "~/components/Icons/Logo"
+
+import useDesignEditorContext from "../../../../hooks/useDesignEditorContext"
+import Play from "../../../../components/Icons/Play"
+//import { Block } from "baseui/block"
 import { useEditor } from "@layerhub-io/react"
-import useEditorType from "~/hooks/useEditorType"
+import useEditorType from "../../../../hooks/useEditorType"
 import { IScene } from "@layerhub-io/types"
-import { loadTemplateFonts } from "~/utils/fonts"
-import { loadVideoEditorAssets } from "~/utils/video"
+import { loadTemplateFonts } from "../../../../utils/fonts"
+import { loadVideoEditorAssets } from "../../../../utils/video"
 import DesignTitle from "./DesignTitle"
-import { IDesign } from "~/interfaces/DesignEditor"
-import Github from "~/components/Icons/Github"
+import { IDesign } from "../../../../interfaces/DesignEditor"
+//import Github from "~/components/Icons/Github"
 /*
-ui的写法不太喜欢，里面都写了一堆css 
+
 */
 console.log("/src/views/DesignEditor/components/Navbar/Navbar file start ");
-const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
-  height: "64px",
-  background: $theme.colors.black,
-  display: "grid",
-  padding: "0 1.25rem",
-  gridTemplateColumns: "380px 1fr 380px",
-  alignItems: "center",
-}))
+
 
 const Navbar = () => {
-  console.log("/src/views/DesignEditor/components/Navbar/Navbar component start ");
+  
   const { setDisplayPreview, setScenes, setCurrentDesign, currentDesign, scenes } = useDesignEditorContext()
   const editorType = useEditorType()
   const editor = useEditor()
@@ -264,13 +258,10 @@ const Navbar = () => {
   
   return (
     // @ts-ignore
-    <ThemeProvider theme={LightTheme}>
-      <Container>
-        <div style={{ color: "#ffffff" }}>
-          <Logo size={36} />
-        </div>
+      <>
+
         <DesignTitle />
-        <Block $style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+     
           <input
             multiple={false}
             onChange={handleFileInput}
@@ -279,71 +270,35 @@ const Navbar = () => {
             ref={inputFileRef}
             style={{ display: "none" }}
           />
-          <Button
-            size="compact"
+          <button
+           
             onClick={handleInputFileRefClick}
-            kind={KIND.tertiary}
-            overrides={{
-              StartEnhancer: {
-                style: {
-                  marginRight: "4px",
-                },
-              },
-            }}
+            
+           
           >
             Import
-          </Button>
+          </button>
 
-          <Button
-            size="compact"
+          <button
+            
             onClick={makeDownloadTemplate}
-            kind={KIND.tertiary}
-            overrides={{
-              StartEnhancer: {
-                style: {
-                  marginRight: "4px",
-                },
-              },
-            }}
+            
           >
             Export
-          </Button>
-          <Button
-            size="compact"
+          </button>
+          <button
+            
             onClick={() => setDisplayPreview(true)}
-            kind={KIND.tertiary}
-            overrides={{
-              StartEnhancer: {
-                style: {
-                  marginRight: "4px",
-                },
-              },
-            }}
+            
           >
             <Play size={24} />
-          </Button>
+          </button>
 
-          <Button
-            size="compact"
-            onClick={() => window.location.replace("https://github.com/layerhub-io/react-design-editor")}
-            kind={KIND.tertiary}
-          >
-            <Github size={24} />
-          </Button>
+        
 
-          <Button
-            style={{ marginLeft: "0.5rem" }}
-            size="compact"
-            onClick={() => window.location.replace("https://editor.layerhub.io")}
-            kind={KIND.primary}
-          >
-            Try PRO
-          </Button>
-        </Block>
-      </Container>
-    </ThemeProvider>
+          </>
   )
+   
 }
 
 export default Navbar
-console.log("/src/views/DesignEditor/components/Navbar/Navbar file end ");
