@@ -2,6 +2,9 @@ import React from "react";
 import { Canvas, useEditor, useActiveObject, useFrame } from "@layerhub-io/react";
 import { IFrame, IScene } from "@layerhub-io/types"
 import { nanoid } from 'nanoid'
+import { groupBy } from "lodash"
+import { editorFonts as fonts } from "./constants/fonts";
+import { loadFonts } from "./utils/fonts";
 
 function App() {
 
@@ -16,6 +19,8 @@ function App() {
     published: boolean
   }
 
+  //console.log(fonts);
+
   const editor = useEditor();
   const frame = useFrame()
   const activeObject = useActiveObject() as any
@@ -28,6 +33,7 @@ function App() {
   const [currentScene, setCurrentScene] = React.useState<IScene>();
   const [currentDesign, setCurrentDesign] = React.useState<IDesign>();
   const [currentPreview, setCurrentPreview] = React.useState<string>()
+ 
 
 
   const loadGraphicTemplate = async (payload: IDesign) => {
@@ -502,7 +508,7 @@ function App() {
 
   }, [editor]);
 
-
+  //加载对象的颜色
   React.useEffect(() => {
     /* if (activeObject && activeObject.type === "StaticVector") {
       const objects = activeObject._objects[0]._objects
@@ -516,6 +522,14 @@ function App() {
       if(activeObject.type === 'StaticPath'){
         setActiveObjectColor(activeObject.fill);
       }
+
+      //这个暂时先不研究，这个是svg 里面有多个颜色
+      if(activeObject.type === 'StaticVector'){
+        //console.log(activeObject.fill);
+        const objects = activeObject._objects[0]._objects
+        const objectColors = groupBy(objects, "fill")
+        console.log(objectColors);
+      }
     }
     
   }, [activeObject])
@@ -525,6 +539,32 @@ function App() {
     //console.log("frameWidth=",frameWidth);
     setActiveObjectColor(color);
     editor.objects.update({ fill: color })
+  }
+
+  //设置字体  async
+  const handleChangeFont = async (fontid:any) =>{
+    //console.log(fontid);
+    if(fontid !==0 && fontid !=="0")
+    {
+      if(editor){
+        const _font = fonts.filter(item=>item.id===fontid)[0];
+   
+
+        const font = {
+          name: _font.name,
+          url: _font.url,
+        }
+        await loadFonts([font])
+        //console.log(font.name);
+        editor.objects.update({
+          fontFamily: font.name,
+          fontURL: font.url,
+        })
+      }
+      
+    }
+    
+    
   }
 
   //设置透明度
@@ -600,7 +640,7 @@ function App() {
   }, [editor]);
 
   //解除当前图层的锁定
-  const handlelock = React.useCallback(() => {
+  const handleUnlock = React.useCallback(() => {
     if (editor) {
       editor.objects.unlock();
     }
@@ -698,13 +738,24 @@ function App() {
         }}
       >
         对当前图层的操作：
+        <select onChange={(e) => handleChangeFont((e.target as any).value)}>
+        <option value={0}>选择字体</option>
+        {
+          fonts.map((font)=>{
+            return (
+              <option key={font.id} value={font.id}>{font.name}</option>
+            )
+          })
+        }
+        </select> 
         透明度：<input type="text" style={{ width: '50px' }} value={opacity} onChange={changeOpacity} />
          颜色：<input value={activeObjectColor} onChange={(e) => handleChangeActiveObjectColor((e.target as any).value)} placeholder="#000000" /> 
         <button onClick={handleClone}>clone</button>
         <button onClick={handleDelete}>delete</button>
         <button onClick={handleLock}>lock</button>
-        <button onClick={handlelock}>unlock</button>
-      
+        <button onClick={handleUnlock}>unlock</button>
+        <button onClick={()=>{editor.objects.bringForward()}}>上移</button>
+        <button onClick={()=>{editor.objects.sendBackwards()}}>下移</button>
         
       </div>
       {/* 画布缩略图 */}

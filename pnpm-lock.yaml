@@ -10,6 +10,7 @@ specifiers:
   '@types/react-dom': ^18.0.8
   '@vitejs/plugin-react': ^2.2.0
   i18next: ^22.0.5
+  lodash: ^4.17.21
   nanoid: ^4.0.0
   react: ^18.2.0
   react-dom: ^18.2.0
@@ -30,6 +31,7 @@ dependencies:
   '@layerhub-io/use-timer': 0.1.1_react@18.2.0
   '@reduxjs/toolkit': 1.9.0_k4ae6lp43ej6mezo3ztvx6pykq
   i18next: 22.0.5
+  lodash: 4.17.21
   nanoid: 4.0.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0

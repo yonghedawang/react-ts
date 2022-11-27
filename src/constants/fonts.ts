@@ -1,24 +1,47 @@
 export const editorFonts = [
   {
-    name: "Uber Move Text",
-    url: "https://d3q7mfli5umxdg.cloudfront.net/UberMoveTextLight.otf",
-    options: { style: "normal", weight: 300 },
+    id:"1",
+    name: "Nunito",
+    url: "https://fonts.gstatic.com/s/nunito/v20/XRXI3I6Li01BKofiOc5wtlZ2di8HDOUhRTM9jo7eTWk.ttf",
+    options: { style: "normal", weight: 900 },
   },
   {
+    id:"2",
     name: "Uber Move Text",
     url: "https://d3q7mfli5umxdg.cloudfront.net/UberMoveTextRegular.otf",
     options: { style: "normal", weight: 400 },
   },
   {
+    id:"3",
     name: "Uber Move Text",
     url: "https://d3q7mfli5umxdg.cloudfront.net/UberMoveTextMedium.otf",
     options: { style: "normal", weight: 500 },
   },
   {
+    id:"4",
     name: "Uber Move Text",
     url: "https://d3q7mfli5umxdg.cloudfront.net/UberMoveTextBold.otf",
     options: { style: "normal", weight: 700 },
   },
+  {
+    id:"5",
+    name: "芫荽",
+    url: "https://tstatic.redocn.com/react/fonts/Iansui.ttf",
+    options: { style: "normal", weight: 700 },
+  },
+  {
+    id:"6",
+    name: "花中",
+    url: "https://tstatic.redocn.com/react/fonts/huazhong.ttf",
+    options: { style: "normal", weight: 700 },
+  },
+  {
+    id:"7",
+    name: "无界",
+    url: "https://tstatic.redocn.com/react/fonts/wujie.otf",
+    options: { style: "normal", weight: 700 },
+  },
+ 
 ]
 
 export const fontStyleLabels = {
