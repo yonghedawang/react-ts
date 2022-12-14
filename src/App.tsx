@@ -3,7 +3,7 @@ import { Canvas, useEditor, useActiveObject, useFrame } from "@layerhub-io/react
 import { IFrame, IScene } from "@layerhub-io/types"
 import { nanoid } from 'nanoid'
 import { groupBy } from "lodash"
-import { editorFonts as fonts } from "./constants/fonts";
+import { editorFonts as fonts ,TEXT_EFFECTS } from "./constants/fonts";
 import { loadFonts } from "./utils/fonts";
 
 function App() {
@@ -566,6 +566,19 @@ function App() {
     
     
   }
+  
+  //设置字体效果
+  const handleChangeFontEffect =  (effectid:any) =>{
+    if(effectid !==0 && effectid !=="0")
+    {
+      if(editor){
+        console.log(effectid);
+        const _effect = TEXT_EFFECTS.filter(item=>item.id===effectid)[0].effect;
+        editor.objects.update(_effect)
+        console.log(_effect);
+      }
+    }
+  }
 
   //设置透明度
   const changeOpacity = (event: any) => {
@@ -748,6 +761,18 @@ function App() {
           })
         }
         </select> 
+
+        <select onChange={(e) => handleChangeFontEffect((e.target as any).value)}>
+        <option value={0}>选择字体效果</option>
+        {
+          TEXT_EFFECTS.map((fontsEffect)=>{
+            return (
+              <option key={fontsEffect.id} value={fontsEffect.id}>{fontsEffect.name}</option>
+            )
+          })
+        }
+        </select> 
+
         透明度：<input type="text" style={{ width: '50px' }} value={opacity} onChange={changeOpacity} />
          颜色：<input value={activeObjectColor} onChange={(e) => handleChangeActiveObjectColor((e.target as any).value)} placeholder="#000000" /> 
         <button onClick={handleClone}>clone</button>

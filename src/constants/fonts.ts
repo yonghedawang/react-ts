@@ -118,3 +118,106 @@ export const fontStyleLabels = {
     label: "Black Italic",
   },
 }
+
+
+
+
+export const TEXT_EFFECTS = [
+  {
+    id: '1',
+    name: "None",
+    preview: "https://i.ibb.co/Wyx2Ftf/none.webp",
+    effect: {
+      fill: "#333333",
+      strokeWidth: 0,
+      shadow: {
+        blur: 2,
+        color: "#afafaf",
+        offsetX: 10,
+        offsetY: 10,
+        enabled: false,
+      },
+    }
+  },
+  {
+    id: '2',
+    name: "Shadow",
+    preview: "https://i.ibb.co/HBQc95J/shadow.webp",
+    effect: {
+      fill: "#333333",
+      shadow: {
+        blur: 2,
+        color: "#afafaf",
+        offsetX: 10,
+        offsetY: 10,
+        enabled: true,
+      },
+    }
+  },
+  {
+    id: '3',
+    name: "Lift",
+    preview: "https://i.ibb.co/M7zpk5f/lift.webp",
+    effect: {
+      fill: "#333333",
+      shadow: {
+        blur: 25,
+        color: "rgba(0,0,0,0.45)",
+        offsetX: 0,
+        offsetY: 0,
+        enabled: true,
+      },
+    }
+  },
+  {
+    id: '4',
+    name: "Hollow",
+    preview: "https://i.ibb.co/vhjCd4w/hollow.webp",
+    effect: {
+      stroke: "#000000",
+      fill: null,
+      strokeWidth: 2,
+      shadow: {
+        blur: 25,
+        color: "rgba(0,0,0,0.45)",
+        offsetX: 0,
+        offsetY: 0,
+        enabled: false,
+      },
+    }
+  },
+  {
+    id: '5',
+    name: "Splice",
+    preview: "https://i.ibb.co/B2JPTfq/splice.webp",
+    effect: {
+      stroke: "#000000",
+      fill: null,
+      strokeWidth: 2,
+      shadow: {
+        blur: 0,
+        color: "#afafaf",
+        offsetX: 10,
+        offsetY: 10,
+        enabled: true,
+      },
+    }
+  },
+  {
+    id: '6',
+    name: "Neon",
+    preview: "https://i.ibb.co/fHdD2mx/neon.webp",
+    effect: {
+      stroke: "#e84393",
+      fill: "#fd79a8",
+      strokeWidth: 2,
+      shadow: {
+        blur: 25,
+        color: "#fd79a8",
+        offsetX: 0,
+        offsetY: 0,
+        enabled: true,
+      },
+    }
+  },
+]
