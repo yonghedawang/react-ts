@@ -1,8 +1,8 @@
 import React from "react";
 import { Canvas, useEditor, useActiveObject, useFrame } from "@layerhub-io/react";
-import { IFrame, IScene } from "@layerhub-io/types"
+import { IFrame, IScene , ILayerOptions} from "@layerhub-io/types"
 import { nanoid } from 'nanoid'
-import { groupBy } from "lodash"
+//import { groupBy } from "lodash"
 import { editorFonts as fonts ,TEXT_EFFECTS } from "./constants/fonts";
 import { loadFonts } from "./utils/fonts";
 
@@ -29,11 +29,13 @@ function App() {
   const [frameHeight, setFrameHeight] = React.useState(1000)
   const [backgroundColor, setBackgroundColor] = React.useState('#ffffff')
   const [activeObjectColor, setActiveObjectColor] = React.useState('#000000')
+  const [activeObjectBlur, setActiveObjectBlur] = React.useState(0)
+  
   const [scenes, setScenes] = React.useState<IScene[]>([]);
   const [currentScene, setCurrentScene] = React.useState<IScene>();
   const [currentDesign, setCurrentDesign] = React.useState<IDesign>();
   const [currentPreview, setCurrentPreview] = React.useState<string>()
- 
+  //const [updateObject,setUpdateObject] = React.useState<ILayerOptions>();
 
 
   const loadGraphicTemplate = async (payload: IDesign) => {
@@ -69,17 +71,17 @@ function App() {
 
 
 
-  //第一次加载
+  //第一次加�?
   React.useEffect(() => {
     if (frame) {
       //console.log("background=>",editor.canvas.backgroundColor);
-      console.log('第一次加载 json');
+      console.log('第一次加�? json');
       setFrameWidth(frame.width)
       setFrameHeight(frame.height)
       setBackgroundColor('#ffffff');
       //{"id":"98PZEYOW0oR-TbmSEQ-MI","type":"GRAPHIC","name":"Untitled Design","frame":{"width":1200,"height":1200},"scenes":[{"id":"U1S5-P_wQQMyVceKnNCz4","layers":[{"id":"background","name":"Initial Frame","angle":0,"stroke":null,"strokeWidth":0,"left":0,"top":0,"width":1200,"height":1200,"opacity":1,"originX":"left","originY":"top","scaleX":1,"scaleY":1,"type":"Background","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":{"color":"#fcfcfc","blur":4,"offsetX":0,"offsetY":0,"affectStroke":false,"nonScaling":false},"fill":"#ffffff","metadata":{}},{"id":"9VWsxoB_O8LSAkCIRjNFY","name":"StaticPath","angle":0,"stroke":null,"strokeWidth":0,"left":103.25999999999999,"top":54.72999999999999,"width":498.84,"height":436.27,"opacity":1,"originX":"left","originY":"top","scaleX":0.48,"scaleY":0.48,"type":"StaticPath","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"preview":"https://ik.imagekit.io/scenify/1635014101144_519480.png","path":[["M",497.434,243.764],["L",377.754,36.403999999999996],["C",376.05600000000004,33.37,372.90700000000004,31.432999999999996,369.434,31.283999999999995],["L",130.71400000000003,31.283999999999995],["C",127.02300000000002,31.250999999999994,123.59900000000003,33.206999999999994,121.75400000000002,36.403999999999996],["L",1.434000000000026,244.404],["C",-0.477999999999974,247.626,-0.477999999999974,251.635,1.434000000000026,254.857],["L",121.75400000000002,463.07],["C",123.65600000000002,465.803,126.74500000000002,467.467,130.074,467.55],["L",369.434,467.55],["C",372.77200000000005,467.502,375.877,465.83,377.754,463.07],["L",497.434,254.21699999999998],["C",499.302,250.983,499.302,246.999,497.434,243.764],["z"]],"fill":"#CBCBCB","metadata":{}},{"id":"WZLRN4LYlahg798kLogBm","name":"StaticImage","angle":0,"stroke":null,"strokeWidth":0,"left":401.28999999999996,"top":275,"width":650,"height":650,"opacity":1,"originX":"left","originY":"top","scaleX":1,"scaleY":1,"type":"StaticImage","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"src":"https://images.pexels.com/photos/670741/pexels-photo-670741.jpeg?auto=compress&cs=tinysrgb&h=650&w=940","cropX":0,"cropY":0,"metadata":{}},{"id":"A6rI0zdsoHWc0Jaht2vDG","name":"StaticText","angle":0,"stroke":null,"strokeWidth":0,"left":415.79999999999995,"top":75.13,"width":577.32,"height":103.96,"opacity":1,"originX":"left","originY":"top","scaleX":1,"scaleY":1,"type":"StaticText","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"charSpacing":0,"fill":"#333333","fontFamily":"OpenSans-Regular","fontSize":92,"lineHeight":1.16,"text":"simple text","textAlign":"center","fontURL":"https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.ttf","metadata":{}},{"id":"Kv__-PW6UJAh9S6lDcg_l","name":"StaticVector","angle":0,"stroke":null,"strokeWidth":0,"left":111.48000000000002,"top":396.73,"width":512,"height":512,"opacity":1,"originX":"left","originY":"top","scaleX":0.45,"scaleY":0.45,"type":"StaticVector","flipX":false,"flipY":false,"skewX":0,"skewY":0,"visible":true,"shadow":null,"src":"https://ik.imagekit.io/scenify/007-hug.svg","colorMap":{"#231f20":"#231f20","#007dc4":"#007dc4","rgb(0,0,0)":"rgb(0,0,0)","#fff":"#fff","#ffc10e":"#ffc10e"},"metadata":{}}],"name":"Untitled design"}],"metadata":{},"preview":""}
 
-      //导入json,一个画布
+      //导入json,一个画�?
       // const design: IScene = { "id": "98PZEYOW0oR-TbmSEQ-MI", "name": "test import", "frame": { "width": 1200, "height": 1200 }, "layers": [{ "id": "background", "name": "Initial Frame", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 0, "top": 0, "width": 1200, "height": 1200, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "Background", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": { "color": "#fcfcfc", "blur": 4, "offsetX": 0, "offsetY": 0, "affectStroke": false, "nonScaling": false }, "fill": "#ffffff", "metadata": {} }, { "id": "9VWsxoB_O8LSAkCIRjNFY", "name": "StaticPath", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 103.25999999999999, "top": 54.72999999999999, "width": 498.84, "height": 436.27, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 0.48, "scaleY": 0.48, "type": "StaticPath", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "preview": "https://ik.imagekit.io/scenify/1635014101144_519480.png", "path": [["M", 497.434, 243.764], ["L", 377.754, 36.403999999999996], ["C", 376.05600000000004, 33.37, 372.90700000000004, 31.432999999999996, 369.434, 31.283999999999995], ["L", 130.71400000000003, 31.283999999999995], ["C", 127.02300000000002, 31.250999999999994, 123.59900000000003, 33.206999999999994, 121.75400000000002, 36.403999999999996], ["L", 1.434000000000026, 244.404], ["C", -0.477999999999974, 247.626, -0.477999999999974, 251.635, 1.434000000000026, 254.857], ["L", 121.75400000000002, 463.07], ["C", 123.65600000000002, 465.803, 126.74500000000002, 467.467, 130.074, 467.55], ["L", 369.434, 467.55], ["C", 372.77200000000005, 467.502, 375.877, 465.83, 377.754, 463.07], ["L", 497.434, 254.21699999999998], ["C", 499.302, 250.983, 499.302, 246.999, 497.434, 243.764], ["z"]], "fill": "#CBCBCB", "metadata": {} }, { "id": "WZLRN4LYlahg798kLogBm", "name": "StaticImage", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 401.28999999999996, "top": 275, "width": 650, "height": 650, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "StaticImage", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "src": "https://images.pexels.com/photos/670741/pexels-photo-670741.jpeg?auto=compress&cs=tinysrgb&h=650&w=940", "cropX": 0, "cropY": 0, "metadata": {} }, { "id": "A6rI0zdsoHWc0Jaht2vDG", "name": "StaticText", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 415.79999999999995, "top": 75.13, "width": 577.32, "height": 103.96, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 1, "scaleY": 1, "type": "StaticText", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "charSpacing": 0, "fill": "#333333", "fontFamily": "OpenSans-Regular", "fontSize": 92, "lineHeight": 1.16, "text": "simple text", "textAlign": "center", "fontURL": "https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.ttf", "metadata": {} }, { "id": "Kv__-PW6UJAh9S6lDcg_l", "name": "StaticVector", "angle": 0, "stroke": null, "strokeWidth": 0, "left": 111.48000000000002, "top": 396.73, "width": 512, "height": 512, "opacity": 1, "originX": "left", "originY": "top", "scaleX": 0.45, "scaleY": 0.45, "type": "StaticVector", "flipX": false, "flipY": false, "skewX": 0, "skewY": 0, "visible": true, "shadow": null, "src": "https://ik.imagekit.io/scenify/007-hug.svg", "colorMap": { "#231f20": "#231f20", "#007dc4": "#007dc4", "rgb(0,0,0)": "rgb(0,0,0)", "#fff": "#fff", "#ffc10e": "#ffc10e" }, "metadata": {} }], "metadata": {}, "preview": "" }
       // editor.scene.importFromJSON(design);
       // console.log(design);
@@ -258,7 +260,7 @@ function App() {
     }
   }, [editor, currentScene])
 
-  //静态文字
+  //静态文�?
   const addText = React.useCallback(() => {
     if (editor) {
       editor.objects.add({
@@ -269,7 +271,7 @@ function App() {
     }
   }, [editor]);
 
-  //静态图片
+  //静态图�?
   const addImage = React.useCallback(() => {
     if (editor) {
       editor.objects.add({
@@ -308,7 +310,7 @@ function App() {
 
   //静态矢量图
   const addStaticVector = React.useCallback(() => {
-    //需要在nginx里配置一下跨域
+    //需要在nginx里配置一下跨�?
     if (editor) {
       editor.objects.add({
         type: 'StaticVector',
@@ -319,9 +321,9 @@ function App() {
 
   }, [editor]);
 
-  /*   //暂时没搞明白是什么
+  /*   //暂时没搞明白是什�?
     const addStaticPath = React.useCallback(()=>{
-      //需要在nginx里配置一下跨域
+      //需要在nginx里配置一下跨�?
       if(editor){
         editor.objects.add({
           type:'StaticPath',
@@ -346,7 +348,7 @@ function App() {
   */
   //设计好后，可以存成svg ,数据从里提取
   const addElements = React.useCallback(() => {
-    //需要在nginx里配置一下跨域
+    //需要在nginx里配置一下跨�?
     if (editor) {
       const item: any = {
         left: 0,
@@ -508,7 +510,7 @@ function App() {
 
   }, [editor]);
 
-  //加载对象的颜色
+  //加载对象的颜�?
   React.useEffect(() => {
     /* if (activeObject && activeObject.type === "StaticVector") {
       const objects = activeObject._objects[0]._objects
@@ -523,12 +525,12 @@ function App() {
         setActiveObjectColor(activeObject.fill);
       }
 
-      //这个暂时先不研究，这个是svg 里面有多个颜色
+      //这个暂时先不研究，这个是svg 里面有多个颜�?
       if(activeObject.type === 'StaticVector'){
         //console.log(activeObject.fill);
         const objects = activeObject._objects[0]._objects
-        const objectColors = groupBy(objects, "fill")
-        console.log(objectColors);
+        //const objectColors = groupBy(objects, "fill")
+        //console.log(objectColors);
       }
     }
     
@@ -539,6 +541,30 @@ function App() {
     //console.log("frameWidth=",frameWidth);
     setActiveObjectColor(color);
     editor.objects.update({ fill: color })
+  }
+
+  //设置图层blur ,应该是模糊
+  const handleChangeActiveObjectBlur  = (blur:number) => {
+    //console.log("frameWidth=",frameWidth);
+    setActiveObjectBlur(blur);
+    console.log(activeObject.shadow);
+    
+    editor.objects.update({ 
+
+    
+      shadow: {
+        blur: Number(blur),
+        color: "#afafaf",
+        offsetX: 10,
+        offsetY: 10,
+        affectStroke: true,
+        nonScaling: true,
+      }
+
+     
+    })
+
+    
   }
 
   //设置字体  async
@@ -574,13 +600,14 @@ function App() {
       if(editor){
         console.log(effectid);
         const _effect = TEXT_EFFECTS.filter(item=>item.id===effectid)[0].effect;
+        console.log(_effect);
         editor.objects.update(_effect)
         console.log(_effect);
       }
     }
   }
 
-  //设置透明度
+  //设置透明�?
   const changeOpacity = (event: any) => {
     console.log('event=', event);
     setOpacity(event.target.value)
@@ -638,21 +665,21 @@ function App() {
     }
   }, [editor]);
 
-  //复制当前层
+  //复制当前�?
   const handleClone = React.useCallback(() => {
     if (editor) {
       editor.objects.clone();
     }
   }, [editor]);
 
-  //锁定当前层
+  //锁定当前�?
   const handleLock = React.useCallback(() => {
     if (editor) {
       editor.objects.lock();
     }
   }, [editor]);
 
-  //解除当前图层的锁定
+  //解除当前图层的锁�?
   const handleUnlock = React.useCallback(() => {
     if (editor) {
       editor.objects.unlock();
@@ -661,7 +688,7 @@ function App() {
 
 
 
-  //重置,重置后不能撤销和不能取消撤销了。从当前开始记录历史
+  //重置,重置后不能撤销和不能取消撤销了。从当前开始记录历�?
   const handleReset = React.useCallback(() => {
     if (editor) {
       console.log('editor.history', editor.history);
@@ -672,7 +699,7 @@ function App() {
 
 
 
-  //StaticGroup，DynamicGroup，DynamicPath，DynamicImage， 不知道怎么操作，在 react-design-editor  搜不到相关代码
+  //StaticGroup，DynamicGroup，DynamicPath，DynamicImage�? 不知道怎么操作，在 react-design-editor  搜不到相关代�?
 
   /*   {
       id: "E2mcHFkwGA-MTJcfl3Abs",
@@ -719,9 +746,9 @@ function App() {
           justifyContent: "center",
         }}
       >
-        对画布的操作：
+        对画布的操作�?
         画布尺寸：宽<input onChange={(event) => { setFrameWidth(event.target.value) }} style={{ width: '150px' }} value={frameWidth} type="text" />
-        高<input onChange={(event) => { setFrameHeight(event.target.value) }} style={{ width: '150px' }} value={frameHeight} type="text" />
+        �?<input onChange={(event) => { setFrameHeight(event.target.value) }} style={{ width: '150px' }} value={frameHeight} type="text" />
         <button onClick={handleChangeSize}>resize</button>
 
         背景色：<input
@@ -750,7 +777,7 @@ function App() {
           justifyContent: "center",
         }}
       >
-        对当前图层的操作：
+        对当前图层的操作:
         <select onChange={(e) => handleChangeFont((e.target as any).value)}>
         <option value={0}>选择字体</option>
         {
@@ -774,7 +801,7 @@ function App() {
         </select> 
 
         透明度：<input type="text" style={{ width: '50px' }} value={opacity} onChange={changeOpacity} />
-         颜色：<input value={activeObjectColor} onChange={(e) => handleChangeActiveObjectColor((e.target as any).value)} placeholder="#000000" /> 
+         颜色:<input value={activeObjectColor} onChange={(e) => handleChangeActiveObjectColor((e.target as any).value)} placeholder="#000000" /> 
         <button onClick={handleClone}>clone</button>
         <button onClick={handleDelete}>delete</button>
         <button onClick={handleLock}>lock</button>
@@ -783,7 +810,18 @@ function App() {
         <button onClick={()=>{editor.objects.sendBackwards()}}>下移</button>
         
       </div>
-      {/* 画布缩略图 */}
+      <div
+        style={{
+          height: "80px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        效果参数：
+        blur:<input value={activeObjectBlur} onChange={(e) => handleChangeActiveObjectBlur((e.target as any).value)} placeholder="0" /> 
+      </div>
+      {/* 画布缩略�? */}
       <div style={{ height: "102px", margin: "10px", display: "flex" }}>
         {scenes.map((page, index) => (
           <div key={index} onClick={() => changePage(page)} style={page.id === currentScene.id ? { "width": "100px", "height": "100px", border: "solid 1px" } : { "width": "100px", "height": "100px" }}  >

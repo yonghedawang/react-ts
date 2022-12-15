@@ -220,4 +220,58 @@ export const TEXT_EFFECTS = [
       },
     }
   },
+  {
+    id: '7',
+    name: "Test",
+    preview: "https://i.ibb.co/fHdD2mx/neon.webp",
+    effect: {
+      stroke: "#000000",
+      fill: "#fd79af",
+      strokeWidth: 1,
+      shadow: {
+        blur: 0,
+        color: "#fd79af",
+        offsetX: 50,
+        offsetY: 50,
+        enabled: true,
+      },
+    }
+  },
+  {
+    id: '8',
+    name: "miaobian",
+    preview: "https://i.ibb.co/B2JPTfq/splice.webp",
+    effect: {
+      stroke: "#0000FF",
+      fill: null,
+      strokeWidth: 5,
+      shadow: {
+        blur: 1,
+        color: null,
+        offsetX: 0,
+        offsetY: 0,
+        enabled: true,
+      },
+    }
+  }
+
+  ,
+  {
+    id: '9',
+    name: "miaobian2",
+    preview: "https://i.ibb.co/B2JPTfq/splice.webp",
+    effect: {
+      stroke: "#0000FF",
+      fill: "#FF0000",
+      strokeWidth: 15,
+      shadow: {
+        blur: 1,
+        color: null,
+        offsetX: 0,
+        offsetY: 0,
+        enabled: true,
+      },
+    }
+  }
+  
 ]
