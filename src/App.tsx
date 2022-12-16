@@ -2,7 +2,7 @@ import React from "react";
 import { Canvas, useEditor, useActiveObject, useFrame } from "@layerhub-io/react";
 import { IFrame, IScene , ILayerOptions} from "@layerhub-io/types"
 import { nanoid } from 'nanoid'
-//import { groupBy } from "lodash"
+import { groupBy } from "lodash"
 import { editorFonts as fonts ,TEXT_EFFECTS } from "./constants/fonts";
 import { loadFonts } from "./utils/fonts";
 
@@ -28,8 +28,19 @@ function App() {
   const [frameWidth, setFrameWidth] = React.useState(1000)
   const [frameHeight, setFrameHeight] = React.useState(1000)
   const [backgroundColor, setBackgroundColor] = React.useState('#ffffff')
-  const [activeObjectColor, setActiveObjectColor] = React.useState('#000000')
-  const [activeObjectBlur, setActiveObjectBlur] = React.useState(0)
+  const [activeObjectColor, setActiveObjectColor ] = React.useState('#000000') 
+  const [activeObjectFontSize, setActiveObjectFontSize] = React.useState(0)
+  const [activeObjectStrokeWidth, setActiveObjectStrokeWidth] = React.useState(0)
+  const [activeObjectStroke, setActiveObjectStroke] = React.useState('#000000')
+  const [activeObjectShadowBlur, setActiveObjectShadowBlur] = React.useState(0)
+  const [activeObjectShadowColor, setActiveObjectShadowColor] = React.useState('#000000')
+  const [activeObjectShadowOffsetX, setActiveObjectShadowOffsetX] = React.useState(0)
+  const [activeObjectShadowOffsetY, setActiveObjectShadowOffsetY] = React.useState(0)
+  /* const [activeObjectShadowAffectStroke, setActiveObjectShadowAffectStroke] = React.useState(true)
+  const [activeObjectShadowNonScaling, setActiveObjectShadowNonScaling] = React.useState(true) */
+  const [activeObjectShadowEnabled, setActiveObjectShadowEnabled] = React.useState(true)
+  
+  const [activeObjectShadow, setActiveObjectShadow] = React.useState({blur:0,color:'#000000',offsetX:0,offsetY:0,enabled:true})
   
   const [scenes, setScenes] = React.useState<IScene[]>([]);
   const [currentScene, setCurrentScene] = React.useState<IScene>();
@@ -71,11 +82,11 @@ function App() {
 
 
 
-  //第一次加�?
+  //第一次加
   React.useEffect(() => {
     if (frame) {
       //console.log("background=>",editor.canvas.backgroundColor);
-      console.log('第一次加�? json');
+      console.log('第一次加 json');
       setFrameWidth(frame.width)
       setFrameHeight(frame.height)
       setBackgroundColor('#ffffff');
@@ -117,18 +128,7 @@ function App() {
 
   }, [editor]);
 
-  //设置当前画布
-
-    // React.useEffect(() => {
-  //   if (editor) {
-  //     console.log("currentScene changed");
-  //     editor.scene.importFromJSON(currentScene);
-
-      
-
-  //   }
-
-  // }, [currentScene]);
+ 
 
   React.useEffect(() => {
     if (editor && scenes && currentScene) {
@@ -260,7 +260,7 @@ function App() {
     }
   }, [editor, currentScene])
 
-  //静态文�?
+  //静态文
   const addText = React.useCallback(() => {
     if (editor) {
       editor.objects.add({
@@ -271,7 +271,7 @@ function App() {
     }
   }, [editor]);
 
-  //静态图�?
+  //静态图
   const addImage = React.useCallback(() => {
     if (editor) {
       editor.objects.add({
@@ -321,31 +321,7 @@ function App() {
 
   }, [editor]);
 
-  /*   //暂时没搞明白是什�?
-    const addStaticPath = React.useCallback(()=>{
-      //需要在nginx里配置一下跨�?
-      if(editor){
-        editor.objects.add({
-          type:'StaticPath',
-          fill:'#000000',//https://tstatic.redocn.com/react/images/001-hug.svg  https://ik.imagekit.io/scenify/005-date.svg
-          //path:[[ 60, 0]]
-        });
-      }
-  
-    },[editor]); */
-
-  /* 
-  
-   [ 
-          ["M",0,129],
-          ["L",125,129],
-          ["L",125,0],
-            ["L",0,0],
-              ["L",0,129],
-                ["Z"],
-                ]
-  
-  */
+ 
   //设计好后，可以存成svg ,数据从里提取
   const addElements = React.useCallback(() => {
     //需要在nginx里配置一下跨�?
@@ -510,19 +486,25 @@ function App() {
 
   }, [editor]);
 
-  //加载对象的颜�?
+  //加载对象的颜
   React.useEffect(() => {
-    /* if (activeObject && activeObject.type === "StaticVector") {
+    if(activeObject && activeObject.type === 'StaticText' ){
+      console.log(activeObject.fontFamily);
+      setActiveObjectFontSize(activeObject.fontSize);
+    }
+    
+    if (activeObject && activeObject.type === "StaticVector") {
       const objects = activeObject._objects[0]._objects
       const objectColors = groupBy(objects, "fill")
       vectorPaths.current = objectColors
       setState({ ...state, colors: Object.keys(objectColors), colorMap: activeObject.colorMap })
-    } */
+    }
     if(activeObject && activeObject.type){
       
       console.log("activeObject",activeObject.type,activeObject);
       if(activeObject.type === 'StaticPath'){
-        setActiveObjectColor(activeObject.fill);
+        
+        (activeObject.fill);
       }
 
       //这个暂时先不研究，这个是svg 里面有多个颜�?
@@ -543,28 +525,101 @@ function App() {
     editor.objects.update({ fill: color })
   }
 
+  const handleChangeActiveObjectFontSize  = (fontSize:any) => {
+    
+    setActiveObjectFontSize(fontSize);
+    editor.objects.update({ fontSize: fontSize })
+    
+  }
+
+  const handleChangeActiveObjectStrokeWidth  = (strokeWidth:any) => {
+    
+    setActiveObjectStrokeWidth(strokeWidth);
+    editor.objects.update({ strokeWidth: Number(strokeWidth) })
+    
+  }
+
+  const handleChangeActiveObjectStroke  = (stroke:any) => {
+    
+    setActiveObjectStroke(stroke);
+    editor.objects.update({ stroke: stroke })
+    
+  }
+
+  
+
   //设置图层blur ,应该是模糊
-  const handleChangeActiveObjectBlur  = (blur:number) => {
-    //console.log("frameWidth=",frameWidth);
-    setActiveObjectBlur(blur);
-    console.log(activeObject.shadow);
+  const handleChangeActiveObjectShadowBlur  = (blur:number) => {
     
-    editor.objects.update({ 
+    setActiveObjectShadowBlur(Number(blur));
+    setActiveObjectShadow({ ...activeObjectShadow, blur:Number(blur) });
+       
+  }
+  const handleChangeActiveObjectShadowColor  = (color:string) => {
+    
+    setActiveObjectShadowColor(color);
+    setActiveObjectShadow({ ...activeObjectShadow, color });
+    
+  }
+  const handleChangeActiveObjectShadowOffsetX  = (offsetX:number) => {
+    
+    setActiveObjectShadowOffsetX(Number(offsetX));
+    setActiveObjectShadow({ ...activeObjectShadow, offsetX:Number(offsetX) });
+  }
+  const handleChangeActiveObjectShadowOffsetY  = (offsetY:number) => {
+    
+    setActiveObjectShadowOffsetY(Number(offsetY));
+    setActiveObjectShadow({ ...activeObjectShadow, offsetY:Number(offsetY) });
+  }
+  
+  const handleChangeActiveObjectShadowEnabled  = (enabled:number) => {
+    
+    setActiveObjectShadowEnabled(Number(enabled)===1?true:false);
+    setActiveObjectShadow({ ...activeObjectShadow, enabled:Number(enabled)===1?true:false });
+    
+  }
+  
 
-    
-      shadow: {
-        blur: Number(blur),
-        color: "#afafaf",
-        offsetX: 10,
-        offsetY: 10,
-        affectStroke: true,
-        nonScaling: true,
+  React.useEffect(() => {
+    // console.log("@");
+    if (editor) {
+      console.log(activeObject.shadow);
+      editor.objects.update({shadow:activeObjectShadow})
+    }
+    console.log("useEffect activeObjectShadow",activeObjectShadow);
+  }, [opacity, activeObjectShadow]);
+
+  //设置字体效果
+  const handleChangeFontEffect =  (effectid:any) =>{
+    if(effectid !==0 && effectid !=="0")
+    {
+      if(editor){
+       console.log(activeObject.strokeWidth);
+        const _effect = TEXT_EFFECTS.filter(item=>item.id===effectid)[0].effect;
+        //console.log(_effect.shadow);
+        setActiveObjectShadow(_effect.shadow);
+        setActiveObjectShadowBlur(_effect.shadow.blur);
+        setActiveObjectShadowColor(_effect.shadow.color?_effect.shadow.color:'');
+        setActiveObjectShadowOffsetX(_effect.shadow.offsetX);
+        setActiveObjectShadowOffsetY(_effect.shadow.offsetY);
+        setActiveObjectShadowEnabled(_effect.shadow.enabled);
+        
+        
+        setActiveObjectColor(_effect.fill?_effect.fill:'');
+        
+        //console.log(typeof(_effect.strokeWidth));
+        if(_effect.strokeWidth){
+          setActiveObjectStrokeWidth(_effect.strokeWidth);
+        }
+
+        if(_effect.stroke){
+          setActiveObjectStroke(_effect.stroke);
+        }
+        
+        editor.objects.update(_effect)
+       // console.log(_effect);
       }
-
-     
-    })
-
-    
+    }
   }
 
   //设置字体  async
@@ -593,19 +648,7 @@ function App() {
     
   }
   
-  //设置字体效果
-  const handleChangeFontEffect =  (effectid:any) =>{
-    if(effectid !==0 && effectid !=="0")
-    {
-      if(editor){
-        console.log(effectid);
-        const _effect = TEXT_EFFECTS.filter(item=>item.id===effectid)[0].effect;
-        console.log(_effect);
-        editor.objects.update(_effect)
-        console.log(_effect);
-      }
-    }
-  }
+  
 
   //设置透明�?
   const changeOpacity = (event: any) => {
@@ -665,21 +708,21 @@ function App() {
     }
   }, [editor]);
 
-  //复制当前�?
+  //复制当前
   const handleClone = React.useCallback(() => {
     if (editor) {
       editor.objects.clone();
     }
   }, [editor]);
 
-  //锁定当前�?
+  //锁定当前
   const handleLock = React.useCallback(() => {
     if (editor) {
       editor.objects.lock();
     }
   }, [editor]);
 
-  //解除当前图层的锁�?
+  //解除当前图层的锁
   const handleUnlock = React.useCallback(() => {
     if (editor) {
       editor.objects.unlock();
@@ -688,7 +731,7 @@ function App() {
 
 
 
-  //重置,重置后不能撤销和不能取消撤销了。从当前开始记录历�?
+  //重置,重置后不能撤销和不能取消撤销了。从当前开始记录历
   const handleReset = React.useCallback(() => {
     if (editor) {
       console.log('editor.history', editor.history);
@@ -746,9 +789,9 @@ function App() {
           justifyContent: "center",
         }}
       >
-        对画布的操作�?
+        对画布的操作
         画布尺寸：宽<input onChange={(event) => { setFrameWidth(event.target.value) }} style={{ width: '150px' }} value={frameWidth} type="text" />
-        �?<input onChange={(event) => { setFrameHeight(event.target.value) }} style={{ width: '150px' }} value={frameHeight} type="text" />
+        <input onChange={(event) => { setFrameHeight(event.target.value) }} style={{ width: '150px' }} value={frameHeight} type="text" />
         <button onClick={handleChangeSize}>resize</button>
 
         背景色：<input
@@ -799,7 +842,7 @@ function App() {
           })
         }
         </select> 
-
+        字体大小:<input value={activeObjectFontSize} onChange={(e) => handleChangeActiveObjectFontSize((e.target as any).value)} placeholder="0" />
         透明度：<input type="text" style={{ width: '50px' }} value={opacity} onChange={changeOpacity} />
          颜色:<input value={activeObjectColor} onChange={(e) => handleChangeActiveObjectColor((e.target as any).value)} placeholder="#000000" /> 
         <button onClick={handleClone}>clone</button>
@@ -819,7 +862,30 @@ function App() {
         }}
       >
         效果参数：
-        blur:<input value={activeObjectBlur} onChange={(e) => handleChangeActiveObjectBlur((e.target as any).value)} placeholder="0" /> 
+        stroke:<input value={activeObjectStroke} onChange={(e) => handleChangeActiveObjectStroke((e.target as any).value)} placeholder="#000000 rgba(0,0,0,0.45)" />
+        strokeWidth:<input value={activeObjectStrokeWidth} onChange={(e) => handleChangeActiveObjectStrokeWidth((e.target as any).value)} placeholder="0" />
+      </div>
+      
+      <div
+        style={{
+          height: "80px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        Shadow效果参数：
+        blur:<input value={activeObjectShadowBlur} onChange={(e) => handleChangeActiveObjectShadowBlur((e.target as any).value)} placeholder="0" /> 
+        color:<input value={activeObjectShadowColor} onChange={(e) => handleChangeActiveObjectShadowColor((e.target as any).value)} placeholder="#000000" /> 
+        offsetX:<input value={activeObjectShadowOffsetX} onChange={(e) => handleChangeActiveObjectShadowOffsetX((e.target as any).value)} placeholder="0" /> 
+        offsetY:<input value={activeObjectShadowOffsetY} onChange={(e) => handleChangeActiveObjectShadowOffsetY((e.target as any).value)} placeholder="0" />
+        Enabled:<select onChange={(e) => handleChangeActiveObjectShadowEnabled((e.target as any).value)}>
+      
+        <option key={1} value={1}>true</option>
+        <option  key={0} value={0}>false</option>
+        </select> 
+
+      
       </div>
       {/* 画布缩略�? */}
       <div style={{ height: "102px", margin: "10px", display: "flex" }}>
