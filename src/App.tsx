@@ -315,6 +315,7 @@ function App() {
       editor.objects.add({
         type: 'StaticVector',
         src: 'https://tstatic.redocn.com/react/images/001-hug.svg'//https://tstatic.redocn.com/react/images/001-hug.svg  https://ik.imagekit.io/scenify/005-date.svg
+        //src:'https://tstatic.redocn.com/react/images/font.svg'
         //colorMap:
       });
     }
@@ -496,8 +497,8 @@ function App() {
     if (activeObject && activeObject.type === "StaticVector") {
       const objects = activeObject._objects[0]._objects
       const objectColors = groupBy(objects, "fill")
-      vectorPaths.current = objectColors
-      setState({ ...state, colors: Object.keys(objectColors), colorMap: activeObject.colorMap })
+      // vectorPaths.current = objectColors
+      // setState({ ...state, colors: Object.keys(objectColors), colorMap: activeObject.colorMap })
     }
     if(activeObject && activeObject.type){
       
